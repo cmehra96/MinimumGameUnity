@@ -7,7 +7,7 @@ public class Test : MonoBehaviour
 {
     private void Awake()
     {
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("Game1");
     }
 
     // Start is called before the first frame update

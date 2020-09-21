@@ -13,6 +13,7 @@ namespace Assets.Scripts.CardElements
     {
         public Card card;
         public Sprite sprite;
+        private SpriteRenderer spriteRenderer;
         private float intitalX;
         private float initialY;
         private Vector2 initPos;
@@ -30,6 +31,11 @@ namespace Assets.Scripts.CardElements
             //base.GetComponent<Button>().interactable = true;
         }
 
+        public void UpdateSpriteRender( Sprite sprite)
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+            spriteRenderer.sprite = sprite;
+        }
 
         public void OnBeginDrag(PointerEventData eventData)
         {
@@ -49,6 +55,16 @@ namespace Assets.Scripts.CardElements
         public void OnPointerClick(PointerEventData eventData)
         {
             Debug.Log("Clicked: " + eventData.pointerCurrentRaycast.gameObject.name);
+
+            for(int i=0;i<GameController.Instance.players[0].GetDeck().CardsCount();i++)
+            {
+                Card card = GameController.Instance.players[0].GetCardByIndex(i);
+                if(card==this.card)
+                {
+                    Debug.Log("touched card" + card.GetCardImageName());
+                    GameController.Instance.MainPlayerCardTapped(i, false);
+                }
+            }
         }
 
         public void OnPointerDown(PointerEventData eventData)

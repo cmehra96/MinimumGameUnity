@@ -66,14 +66,21 @@ namespace Assets.Scripts.CardElements
         public int CardsCount()
         {
             return deck.Count;
-        }   
+        }
 
-        
-       public Card Deal()
+
+        public Card Deal()
         {
             Card dealCard = deck.ElementAt(deck.Count - 1);
             deck.RemoveAt(deck.Count - 1);
             return dealCard;
+        }
+
+        public Card GetTopCard()
+        {
+            if (CardsCount() == 0)
+                return null;
+            return deck.ElementAt(CardsCount()-1);
         }
     }
 }

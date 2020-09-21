@@ -13,6 +13,8 @@ namespace Assets.Scripts.CardElements
         public List<GameObject> generatedCards = new List<GameObject>();
         public List<GameObject> playersPosition;
         public GameObject dealCardDistribution;
+        private bool isCardDistributionCompleted = false;
+        
         public static CardDistributionAnimation instance
         {
             get;
@@ -64,6 +66,7 @@ namespace Assets.Scripts.CardElements
 
             foreach (GameObject gameObject in generatedCards)
                 Destroy(gameObject);
+            isCardDistributionCompleted = true;
         }
 
         public void PlayCardDistributionAnimation()
@@ -71,6 +74,9 @@ namespace Assets.Scripts.CardElements
             generateCards(true);
             StartCoroutine(DistributeCardsToPlayer());
         }
+
+        public bool getIsCardDistributionCompleted()
+        { return isCardDistributionCompleted; }
 
         void Awake()
         {

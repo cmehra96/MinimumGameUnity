@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.CardElements;
+using Assets.Scripts.Listeners;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace Assets.Scripts.Player
         protected int previousRoundScore;
         protected int score;
         protected int currentRoundScore = 0;
+        protected PlayerEventListener listener= new PlayerEventListener();
 
         public Player(string name)
         {
@@ -39,5 +41,6 @@ namespace Assets.Scripts.Player
             return myDeck.GetCardByIndex(i);
 
         }
+
     }
 }

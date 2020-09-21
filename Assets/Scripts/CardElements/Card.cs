@@ -43,11 +43,35 @@ namespace Assets.Scripts.CardElements
             return (int)suit;
         }
 
+        private string rankToString()
+        {
+            switch(rank)
+            {
+                case RANK.JACK: return "jack";
+
+                case RANK.QUEEN: return "queen";
+
+                case RANK.KING: return "king";
+
+                case RANK.ACE:return "ace";
+
+                default: return GetRankValue().ToString();
+            }
+        }
+
       
 
          public string GetCardImageName()
         {
-            return suit.ToString().ToLower() + GetRankValue();
+            return suit.ToString().ToLower() + rankToString();
+        }
+
+        public string GetCardImageName(bool showcardface)
+        {
+            if (showcardface)
+                return suit.ToString().ToLower() + rankToString();
+            else
+                return "blueback";
         }
     }
 
