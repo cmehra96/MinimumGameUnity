@@ -26,7 +26,8 @@ public class GameView : MonoBehaviour
     {
         int cardcount = PlayerUIMapping.Instance.cardholder[0].transform.childCount;
 
-        
+        if (cardcount == 0)
+        {
 
             int decksize = GameController.Instance.players[0].GetDeck().CardsCount();
 
@@ -35,18 +36,19 @@ public class GameView : MonoBehaviour
                 Card currentCard = GameController.Instance.players[0].GetCardByIndex(i);
                 GameObject vector2 = Object.Instantiate<GameObject>(this.cardPrefab, PlayerUIMapping.Instance.cardholder[0].transform);
                 vector2.transform.rotation = Quaternion.Euler(Vector3.zero);
-                string str = "Cards/" + currentCard.GetCardImageName(true);
+                string str = "Cards/" + currentCard.GetCardImageName(false);
                 Sprite sprite = Resources.Load<Sprite>(str);
                 vector2.GetComponent<CardUI>().sprite = sprite;
-               // vector2.GetComponent<CardUI>().UpdateSpriteRender(sprite);
+                vector2.GetComponent<CardUI>().UpdateSpriteRender(sprite);
                 vector2.GetComponent<CardUI>().card = currentCard;
                 vector2.GetComponent<RectTransform>().sizeDelta = new Vector2(0.08f * Screen.width, 0.2f * Screen.height);
                 vector2.GetComponent<RectTransform>().localScale = Vector3.one;
                 CardUI cardUI = vector2.GetComponent<CardUI>();
                 vector2.GetComponent<Image>().sprite = vector2.GetComponent<CardUI>().sprite;
-                if(cardcount==0)
+
                 vector2.transform.SetParent(PlayerUIMapping.Instance.cardholder[0].transform);
             }
+        }
         
         // If Required 
         //else

@@ -33,7 +33,7 @@ namespace Assets.Scripts.CardElements
             int size = 0;
             if (generatedCards.Count > 0)
                 generatedCards.Clear();
-            GameObject distributionobject = GameObject.Find("CardDistributionAnimation");
+            GameObject distributionobject = GameObject.Find("InteractiveButtons");
             if (isNewGame)
                 size = playersPosition.Count * 2;
             else
@@ -64,8 +64,8 @@ namespace Assets.Scripts.CardElements
             yield return new WaitForSeconds(1f);
             playersPosition.First().SetActive(true);
 
-            foreach (GameObject gameObject in generatedCards)
-                Destroy(gameObject);
+            //foreach (GameObject gameObject in generatedCards)
+            //    Destroy(gameObject);
             isCardDistributionCompleted = true;
         }
 
