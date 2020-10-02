@@ -33,7 +33,7 @@ namespace Assets.Scripts.CardElements
             int size = 0;
             if (generatedCards.Count > 0)
                 generatedCards.Clear();
-            GameObject distributionobject = GameObject.Find("InteractiveButtons");
+            GameObject distributionobject = GameObject.Find("CardDistributionAnimation");
             if (isNewGame)
                 size = playersPosition.Count * 2;
             else
@@ -52,20 +52,21 @@ namespace Assets.Scripts.CardElements
         private IEnumerator DistributeCardsToPlayer()
         {
             
-            foreach (GameObject newcard in generatedCards)
+            for(int i=0;i< generatedCards.Count();i++)
+            //foreach (GameObject newcard in generatedCards)
             {
-                var cover = Instantiate(cardsBack, newcard.transform.position, Quaternion.identity, newcard.transform);
+                var cover = Instantiate(cardsBack, generatedCards[i].transform.position, Quaternion.identity, generatedCards[i].transform);
                 cover.GetComponent<RectTransform>().localScale = Vector3.one;
-                var tween = cover.transform.DOMove(playersPosition.First().transform.position, 0.5f);
+                var tween = cover.transform.DOMove(playersPosition[i%(playersPosition.Count)].transform.position, 0.5f);
                 tween.OnComplete(() => Destroy(cover));
                 yield return new WaitForSeconds(0.6f);
 
             }
             yield return new WaitForSeconds(1f);
-            playersPosition.First().SetActive(true);
+            //playersPosition.First().SetActive(true);
 
-            //foreach (GameObject gameObject in generatedCards)
-            //    Destroy(gameObject);
+            foreach (GameObject gameObject in generatedCards)
+                Destroy(gameObject);
             isCardDistributionCompleted = true;
         }
 
@@ -88,6 +89,10 @@ namespace Assets.Scripts.CardElements
          
         }
 
-       
+        private void OnDisable()
+        {
+            StopAllCoroutines();
+        }
+
     }
 }

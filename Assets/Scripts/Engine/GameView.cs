@@ -36,13 +36,13 @@ public class GameView : MonoBehaviour
                 Card currentCard = GameController.Instance.players[0].GetCardByIndex(i);
                 GameObject vector2 = Object.Instantiate<GameObject>(this.cardPrefab, PlayerUIMapping.Instance.cardholder[0].transform);
                 vector2.transform.rotation = Quaternion.Euler(Vector3.zero);
-                string str = "Cards/" + currentCard.GetCardImageName(false);
+                string str = "Cards/" + currentCard.GetCardImageName(true);
                 Sprite sprite = Resources.Load<Sprite>(str);
                 vector2.GetComponent<CardUI>().sprite = sprite;
-                vector2.GetComponent<CardUI>().UpdateSpriteRender(sprite);
+               // vector2.GetComponent<CardUI>().UpdateSpriteRender(sprite);
                 vector2.GetComponent<CardUI>().card = currentCard;
-                vector2.GetComponent<RectTransform>().sizeDelta = new Vector2(0.08f * Screen.width, 0.2f * Screen.height);
-                vector2.GetComponent<RectTransform>().localScale = Vector3.one;
+               // vector2.GetComponent<RectTransform>().sizeDelta = new Vector2(0.08f * Screen.width, 0.2f * Screen.height);
+               // vector2.GetComponent<RectTransform>().localScale = Vector3.one;
                 CardUI cardUI = vector2.GetComponent<CardUI>();
                 vector2.GetComponent<Image>().sprite = vector2.GetComponent<CardUI>().sprite;
 
@@ -63,6 +63,11 @@ public class GameView : MonoBehaviour
 
     }
 
+    public void DrawLeftPlayerDeck()
+    {
+
+    }
+
     public void DrawDealtDeck()
     {
         int cardcount = dealtDeckObject.transform.childCount;
@@ -74,10 +79,12 @@ public class GameView : MonoBehaviour
             vector2.transform.rotation = Quaternion.Euler(Vector3.zero);
             string str = "Cards/" + currentCard.GetCardImageName(false);
             Sprite sprite = Resources.Load<Sprite>(str);
+            RectTransform rt = vector2.GetComponent<RectTransform>();
             vector2.GetComponent<CardUI>().sprite = sprite;
             vector2.GetComponent<CardUI>().card = currentCard;
-           vector2.GetComponent<RectTransform>().sizeDelta = new Vector2(0.08f * Screen.width, 0.2f * Screen.height);
+            vector2.GetComponent<RectTransform>().sizeDelta = new Vector2(0.08f * Screen.width, 0.2f * Screen.height);
             vector2.GetComponent<RectTransform>().localScale = Vector3.one;
+            //vector2.transform.position = Camera.main.ScreenToViewportPoint(new Vector3(Screen.width * 0.5f - rt.rect.width, Screen.height * 0.5f, 0));
             CardUI cardUI = vector2.GetComponent<CardUI>();
             vector2.GetComponent<Image>().sprite = vector2.GetComponent<CardUI>().sprite;
             vector2.transform.SetParent(dealtDeckObject.transform);
@@ -90,15 +97,18 @@ public class GameView : MonoBehaviour
 
         if (cardcount == 0)
         {
+            
             Card currentCard = GameController.Instance.DealtDeck.GetTopCard();
             GameObject vector2 = Object.Instantiate<GameObject>(this.cardPrefab, discardedDeckObject.transform);
             vector2.transform.rotation = Quaternion.Euler(Vector3.zero);
             string str = "Cards/" + currentCard.GetCardImageName(false);
+            RectTransform rt = vector2.GetComponent<RectTransform>();
             Sprite sprite = Resources.Load<Sprite>(str);
             vector2.GetComponent<CardUI>().sprite = sprite;
             vector2.GetComponent<CardUI>().card = currentCard;
             vector2.GetComponent<RectTransform>().sizeDelta = new Vector2(0.08f * Screen.width, 0.2f * Screen.height);
             vector2.GetComponent<RectTransform>().localScale = Vector3.one;
+          //  vector2.transform.position = Camera.main.ScreenToViewportPoint(new Vector3(Screen.width * 0.5f + rt.rect.width, Screen.height * 0.5f, 0));
             CardUI cardUI = vector2.GetComponent<CardUI>();
             vector2.GetComponent<Image>().sprite = vector2.GetComponent<CardUI>().sprite;
             vector2.transform.SetParent(discardedDeckObject.transform);
@@ -108,6 +118,11 @@ public class GameView : MonoBehaviour
     private void Awake()
     {
         GameView.Instance = this;
+    }
+
+    private void Update()
+    {
+        
     }
 
     // Start is called before the first frame update

@@ -96,6 +96,7 @@ public class GameController : MonoBehaviour
             GameView.Instance.DrawMainPlayerDeck();
             GameView.Instance.DrawDealtDeck();
             GameView.Instance.DrawDiscardDeck();
+            
         }
 
     }
