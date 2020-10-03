@@ -45,6 +45,11 @@ public class GameController : MonoBehaviour
         {
             players[i].AddToHand(DealtDeck.Deal());
             players[i].AddToHand(DealtDeck.Deal());
+            players[i].AddToHand(DealtDeck.Deal());
+            players[i].AddToHand(DealtDeck.Deal());
+            players[i].AddToHand(DealtDeck.Deal());
+            players[i].AddToHand(DealtDeck.Deal());
+            players[i].AddToHand(DealtDeck.Deal());
         }
     }
 
@@ -96,6 +101,7 @@ public class GameController : MonoBehaviour
             GameView.Instance.DrawMainPlayerDeck();
             GameView.Instance.DrawDealtDeck();
             GameView.Instance.DrawDiscardDeck();
+            GameView.Instance.DrawLeftPlayerDeck();
             
         }
 

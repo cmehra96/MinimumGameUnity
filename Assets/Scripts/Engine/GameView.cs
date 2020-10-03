@@ -65,7 +65,31 @@ public class GameView : MonoBehaviour
 
     public void DrawLeftPlayerDeck()
     {
+        int cardcount = PlayerUIMapping.Instance.cardholder[1].transform.childCount;
+        if (cardcount == 0)
+        {
 
+            int decksize = GameController.Instance.players[0].GetDeck().CardsCount();
+
+            for (int i = 0; i < decksize; i++)
+            {
+                Card currentCard = GameController.Instance.players[1].GetCardByIndex(i);
+                GameObject vector2 = Object.Instantiate<GameObject>(this.cardPrefab, PlayerUIMapping.Instance.cardholder[1].transform);
+                vector2.transform.localRotation = Quaternion.Euler(Vector3.zero);
+                float totalWidht = PlayerUIMapping.Instance.cardholder[1].GetComponent<RectTransform>().sizeDelta.x;
+                string str = "Cards/" + currentCard.GetCardImageName(true);
+                Sprite sprite = Resources.Load<Sprite>(str);
+                vector2.GetComponent<CardUI>().sprite = sprite;
+                // vector2.GetComponent<CardUI>().UpdateSpriteRender(sprite);
+                vector2.GetComponent<CardUI>().card = currentCard;
+                // vector2.GetComponent<RectTransform>().sizeDelta = new Vector2(0.08f * Screen.width, 0.2f * Screen.height);
+                // vector2.GetComponent<RectTransform>().localScale = Vector3.one;
+                CardUI cardUI = vector2.GetComponent<CardUI>();
+                vector2.GetComponent<Image>().sprite = vector2.GetComponent<CardUI>().sprite;
+
+                vector2.transform.SetParent(PlayerUIMapping.Instance.cardholder[1].transform);
+            }
+        }
     }
 
     public void DrawDealtDeck()
