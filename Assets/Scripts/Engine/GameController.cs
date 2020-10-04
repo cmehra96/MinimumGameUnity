@@ -101,8 +101,11 @@ public class GameController : MonoBehaviour
             GameView.Instance.DrawMainPlayerDeck();
             GameView.Instance.DrawDealtDeck();
             GameView.Instance.DrawDiscardDeck();
-            GameView.Instance.DrawLeftPlayerDeck();
-            
+            GameView.Instance.DrawPlayerAtLeft();
+            GameView.Instance.DrawPlayerAtTopLeft();
+            GameView.Instance.DrawPlayerAtTopCenter();
+            GameView.Instance.DrawPlayerAtTopRight();
+            GameView.Instance.DrawPlayerAtRight();
         }
 
     }
