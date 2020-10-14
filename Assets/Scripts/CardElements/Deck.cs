@@ -82,5 +82,26 @@ namespace Assets.Scripts.CardElements
                 return null;
             return deck.ElementAt(CardsCount()-1);
         }
+
+        public void Remove(int index)
+        {
+            if (index < 0 || index >= deck.Count)
+                throw new ArgumentOutOfRangeException();
+            deck.RemoveAt(index);
+        }
+        public Card Remove(Card card)
+        {
+            Card card1 = null; ;
+            for (int i = 0; i < deck.Count; i++)
+            {
+                if (deck[i] == card && deck[i].GetSuitValue() == card.GetSuitValue())
+                {
+                  card1  = deck.ElementAt(i);
+                    deck.RemoveAt(i);
+                    break;
+                }
+            }
+            return card1;
+        }
     }
 }

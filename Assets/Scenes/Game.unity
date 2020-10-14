@@ -1641,6 +1641,10 @@ MonoBehaviour:
   - {fileID: 100035382}
   - {fileID: 370035454}
   - {fileID: 614840029}
+  turnIndicators:
+  - {fileID: 1729014547}
+  - {fileID: 577064630}
+  - {fileID: 966717019}
 --- !u!114 &1785296096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1669,6 +1673,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94c54c81a39d46d4fbb7055737e0cfc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  no_Of_CPU_Players: 5
 --- !u!1 &1861006780
 GameObject:
   m_ObjectHideFlags: 0

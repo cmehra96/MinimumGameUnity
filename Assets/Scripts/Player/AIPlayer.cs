@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Player
 {
-    class AIPlayer
+    class AIPlayer: Player
     {
+       public AIPlayer(string name) : base(name)
+        {
+            
+        }
     }
 }

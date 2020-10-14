@@ -40,7 +40,7 @@ namespace Assets.Scripts.CardElements
                 size = playersPosition.Count;
             for (int i = 0; i < size; i++)
             {
-                GameObject vector2 = UnityEngine.Object.Instantiate<GameObject>(cardsBack, distributionobject.transform);
+                GameObject vector2 = Instantiate(cardsBack, distributionobject.transform);
                 generatedCards.Add(vector2);
                 vector2.SetActive(true);
             }
@@ -53,7 +53,6 @@ namespace Assets.Scripts.CardElements
         {
             
             for(int i=0;i< generatedCards.Count();i++)
-            //foreach (GameObject newcard in generatedCards)
             {
                 var cover = Instantiate(cardsBack, generatedCards[i].transform.position, Quaternion.identity, generatedCards[i].transform);
                 cover.GetComponent<RectTransform>().localScale = Vector3.one;

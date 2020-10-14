@@ -42,5 +42,9 @@ namespace Assets.Scripts.Player
 
         }
 
+        public Card RemoveCard(Card touchedCard)
+        {
+            return myDeck.Remove(touchedCard);
+        }
     }
 }

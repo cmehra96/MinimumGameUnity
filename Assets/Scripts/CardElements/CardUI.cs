@@ -54,17 +54,28 @@ namespace Assets.Scripts.CardElements
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            Debug.Log("Clicked: " + eventData.pointerCurrentRaycast.gameObject.name);
+            // Debug.Log("Clicked: " + eventData.pointerCurrentRaycast.gameObject.name);
+            if (GameController.Instance.GetMainPlayer() != GameController.Instance.GetCurrentPlayer())
+            {
+                Debug.Log("Current player is not Main Player");
+                return;
+            }
 
-            for(int i=0;i<GameController.Instance.players[0].GetDeck().CardsCount();i++)
+            for (int i=0;i<GameController.Instance.players[0].GetDeck().CardsCount();i++)
             {
                 Card card = GameController.Instance.players[0].GetCardByIndex(i);
                 if(card==this.card)
                 {
                     Debug.Log("touched card" + card.GetCardImageName());
-                    GameController.Instance.MainPlayerCardTapped(i, false);
+                    GameController.Instance.MainPlayerCardTapped(i);
+                    return;
                 }
             }
+            if (GameController.Instance.DealtDeck.GetTopCard() == this.card)
+                GameController.Instance.TopCardOfDealtDeckTapped();
+            else if (GameController.Instance.DiscardedDeck.GetTopCard() == this.card)
+                GameController.Instance.TopCardOfDiscardedDeckTapped();
+
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -84,6 +95,24 @@ namespace Assets.Scripts.CardElements
         {
             Debug.Log("Long Press");
             onLongPress.Invoke();
+            
+            if (GameController.Instance.GetMainPlayer() != GameController.Instance.GetCurrentPlayer())
+            {
+                Debug.Log("Current player is not Main Player");
+                return;
+            }
+
+            for (int i = 0; i < GameController.Instance.players[0].GetDeck().CardsCount(); i++)
+            {
+                Card card = GameController.Instance.players[0].GetCardByIndex(i);
+                if (card == this.card)
+                {
+                    Debug.Log("touched card" + card.GetCardImageName());
+                    GameController.Instance.SetIsLongPressed(true);
+                    GameController.Instance.MainPlayerCardTapped(i);
+                    return;
+                }
+            }
         }
     }
 }
