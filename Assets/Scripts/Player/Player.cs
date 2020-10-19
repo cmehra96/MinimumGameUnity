@@ -29,7 +29,7 @@ namespace Assets.Scripts.Player
         {
             currentRoundCard = card;
             myDeck.Add(card);
-           // myDeck.SortBySuitDesc();
+            myDeck.SortBySuitDesc();
         }
 
         public Deck GetDeck()

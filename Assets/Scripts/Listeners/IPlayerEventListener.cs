@@ -9,14 +9,14 @@ namespace Assets.Scripts.Listeners
 {
   public  interface IPlayerEventListener
     {
-        void singleSwapFromDealtDeck(Player.Player player, Card swapCard);
+        void SingleSwapFromDealtDeck(Player.Player player, Card swapCard);
 
-        void multiSwapFromDealtDeck(Player.Player player, Deck tempLongTouchList);
+        void MultiSwapFromDealtDeck(Player.Player player, Deck tempLongTouchList);
 
-        void singleSwapFromDiscardedDeck(Player.Player player, Card swapCard);
+        void SingleSwapFromDiscardedDeck(Player.Player player, Card swapCard);
 
-        void multiSwapFromDiscardedDeck(Player.Player player, Deck tempLongTouchList);
+        void MultiSwapFromDiscardedDeck(Player.Player player, Deck tempLongTouchList);
 
-        void sayMinimum(Player.Player player);
+        void SayMinimum(Player.Player player);
     }
 }

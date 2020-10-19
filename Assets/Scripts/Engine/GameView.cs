@@ -25,6 +25,11 @@ public class GameView : MonoBehaviour
     public void DrawMainPlayerDeck()
     {
         int cardcount = PlayerUIMapping.Instance.cardholder[0].transform.childCount;
+        if (GameController.Instance.GetCurrentPlayer() == GameController.Instance.players[0])
+            PlayerUIMapping.Instance.turnIndicators[0].SetActive(true);
+        else
+            PlayerUIMapping.Instance.turnIndicators[0].SetActive(false);
+
 
         if (cardcount == 0)
         {
@@ -66,6 +71,10 @@ public class GameView : MonoBehaviour
     public void DrawPlayerAtLeft()
     {
         int cardcount = PlayerUIMapping.Instance.cardholder[1].transform.childCount;
+        if (GameController.Instance.GetCurrentPlayer() == GameController.Instance.players[1])
+            PlayerUIMapping.Instance.turnIndicators[1].SetActive(true);
+        else
+            PlayerUIMapping.Instance.turnIndicators[1].SetActive(false);
         if (cardcount == 0)
         {
 

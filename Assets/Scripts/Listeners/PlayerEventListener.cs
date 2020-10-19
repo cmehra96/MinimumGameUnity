@@ -11,26 +11,26 @@ namespace Assets.Scripts.Listeners
     {
 
 
-        public void singleSwapFromDealtDeck(Player.Player player, Card swapCard)
+        public void SingleSwapFromDealtDeck(Player.Player player, Card swapCard)
         {
             GameController.Instance.SingleSwapFromDealtDeck(player, swapCard);
         }
 
-        public void singleSwapFromDiscardedDeck(Player.Player player, Card swapCard)
+        public void SingleSwapFromDiscardedDeck(Player.Player player, Card swapCard)
         {
-            throw new NotImplementedException();
+            GameController.Instance.SingleSwapFromDiscardedDeck(player, swapCard);
         }
-        public void multiSwapFromDealtDeck(Player.Player player, Deck tempLongTouchList)
+        public void MultiSwapFromDealtDeck(Player.Player player, Deck tempLongTouchList)
         {
-            throw new NotImplementedException();
-        }
-
-        public void multiSwapFromDiscardedDeck(Player.Player player, Deck tempLongTouchList)
-        {
-            throw new NotImplementedException();
+            GameController.Instance.MultiCardDealtDeckSwap(player, tempLongTouchList);
         }
 
-        public void sayMinimum(Player.Player player)
+        public void MultiSwapFromDiscardedDeck(Player.Player player, Deck tempLongTouchList)
+        {
+            GameController.Instance.MultiCardDiscardedDeckSwap(player, tempLongTouchList);
+        }
+
+        public void SayMinimum(Player.Player player)
         {
             throw new NotImplementedException();
         }

@@ -39,6 +39,43 @@ namespace Assets.Scripts.CardElements
             }
         }
 
+        /// <summary>
+        /// Method to sort deck based on suit
+        /// in descending order.
+        /// Order will be
+        /// Diamond- Highest
+        /// Hearts
+        /// Spades
+        /// Club- Lowest
+        /// </summary>
+        public void SortBySuitDesc()
+        {
+            deck.Sort((lhs, rhs) => rhs.CompareTo(lhs));
+        }
+
+        /// <summary>
+        /// compare Cards by their rank, order same as sortBySuit method
+        /// </summary>
+        /// 
+
+        public void SortByRankDesc()
+        {
+            deck.Sort(delegate (Card lhs, Card rhs)
+            {
+                return rhs.GetRankValue() - lhs.GetRankValue();
+            });
+        }
+
+        public void SortByRankAsc()
+        {
+            deck.Sort(delegate (Card lhs, Card rhs)
+            {
+                return lhs.GetRankValue() - rhs.GetRankValue();
+            });
+        }
+
+       
+
         public Card GetCardByIndex(int index)
         {
             if (index < 0 || index >= this.deck.Count())
@@ -102,6 +139,11 @@ namespace Assets.Scripts.CardElements
                 }
             }
             return card1;
+        }
+
+        public void Clear()
+        {
+            deck.Clear();
         }
     }
 }
