@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.CardElements;
+﻿using Assets.Scripts;
+using Assets.Scripts.CardElements;
 using Assets.Scripts.Listeners;
 using Assets.Scripts.Player;
 using DG.Tweening;
@@ -18,6 +19,7 @@ public class GameController : MonoBehaviour
     private Card touchedCard = null;
     private bool isLongPressed = false;
     private Player mainPlayer;
+    private Player currentPlayer;
     public int no_Of_CPU_Players;
     private int currentPlayerIndex = 0;
     private Deck tempLongTouchedList = new Deck();
@@ -59,6 +61,11 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public void CallMinium(Player player)
+    {
+        throw new NotImplementedException();
+    }
+
     private void InitialisePlayers()
     {
         players.Add(new Player("You"));
@@ -95,6 +102,7 @@ public class GameController : MonoBehaviour
 
     public void TopCardOfDealtDeckTapped()
     {
+        Debug.Log("Dealt Deck Count " + DealtDeck.CardsCount());
         if (!isLongPressed)
         {
             if (touchedCard != null)
@@ -133,10 +141,17 @@ public class GameController : MonoBehaviour
            CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], true));
             player.AddToHand(temp);
             tempLongTouchedList.Clear();
-            Invoke("LoadClearMethod", 1.0f);
-
+            if(DealtDeck.CardsCount()==0)
+            {
+                Debug.Log("Dealt Deck empty refilling");
+                RefillDeck();
+            }
+            Invoke("LoadClearMethod", Constants.clearMethodDelay);
+            StartCoroutine(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay));
         }
     }
+
+   
 
     /// <summary>
     /// Method to swap card between Dealt Deck
@@ -156,8 +171,13 @@ public class GameController : MonoBehaviour
         player.AddToHand(temp);
         DiscardedDeck.Add(temp1);
         this.touchedCard = null;
-
-        Invoke("LoadClearMethod", 1.0f);
+        if (DealtDeck.CardsCount() == 0)
+        {
+            Debug.Log("Dealt Deck empty refilling");
+            RefillDeck();
+        }
+        Invoke("LoadClearMethod", Constants.clearMethodDelay);
+        StartCoroutine(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay));
     }
 
     /// <summary>
@@ -170,7 +190,7 @@ public class GameController : MonoBehaviour
     /// <returns></returns>
     private IEnumerator SingleSwapAnimationFromDealtDeck(GameObject parent, Card touchedCard, GameObject animationHolder, bool isparentdistrubtioncompleted)
     {
-
+        Debug.Log("Inside Single Swap Discarded Deck Animation Method");
         foreach (Transform child in parent.transform)
         {
             CardUI cardUI = child.GetComponent<CardUI>();
@@ -242,7 +262,8 @@ public class GameController : MonoBehaviour
            CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], true));
             player.AddToHand(temp);
             tempLongTouchedList.Clear();
-            Invoke("LoadClearMethod", 1.0f);
+            Invoke("LoadClearMethod", Constants.clearMethodDelay);
+            StartCoroutine(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay));
         }
     }
 
@@ -264,7 +285,8 @@ public class GameController : MonoBehaviour
         DiscardedDeck.Add(temp2);
         player.AddToHand(temp);
         this.touchedCard = null;    // Global variable
-        Invoke("LoadClearMethod", 1.0f);
+        Invoke("LoadClearMethod", Constants.clearMethodDelay);
+        StartCoroutine(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay));
     }
 
 
@@ -279,7 +301,7 @@ public class GameController : MonoBehaviour
     /// <returns></returns>
     private IEnumerator SingleSwapAnimationFromDiscardedDeck(GameObject parent, Card touchedCard, GameObject animationHolder, bool isparentdistrubtioncompleted)
     {
-
+        Debug.Log("Inside Single Swap Discarded Deck Animation Method");
         foreach (Transform child in parent.transform)
         {
             CardUI cardUI = child.GetComponent<CardUI>();
@@ -307,8 +329,34 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public IEnumerator SwitchTurnToNextPlayer(bool isShowDownCalled, float delayTime)
+    {
+        Debug.Log("Inside Switch Turn To Next Player Method");
+        yield return new WaitForSeconds(delayTime);
+        int size = players.Count;
+        if(isShowDownCalled)
+        {
+            for(int i=0;i<size;i++)
+            {
+                if(players[i].IsRoundWon())
+                {
+                    currentPlayerIndex = (i + 1) % size;
+                }
+            }
+        }
+        else
+        {
+            currentPlayerIndex = (currentPlayerIndex + 1) % size;
+        }
+       
+        players[currentPlayerIndex].NotifyPlayerForTurn();
+        Debug.Log("Switch Turn Method Executed Succussfully");
+
+    }
+
     private void LoadClearMethod()
     {
+        Debug.Log("Inside Load Clear Method");
         StartCoroutine(IClearItems(PlayerUIMapping.Instance.cardholder[currentPlayerIndex]));
         StartCoroutine(IClearItems(GameView.Instance.dealtDeckObject));
         StartCoroutine(IClearItems(GameView.Instance.discardedDeckObject));
@@ -325,6 +373,20 @@ public class GameController : MonoBehaviour
 
     }
 
+    private void RefillDeck()
+    {
+       if(DealtDeck.CardsCount()==0)
+        {
+            Card topCard = DiscardedDeck.Deal();
+            while(DiscardedDeck.CardsCount()>0)
+            {
+                DealtDeck.Add(DiscardedDeck.Deal());
+            }
+            DealtDeck.Shuffle();
+            DiscardedDeck.Add(topCard);
+
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -348,6 +410,17 @@ public class GameController : MonoBehaviour
             GameView.Instance.DrawPlayerAtRight();
         }
 
+    }
+
+    private void OnDisable()
+    {
+       Debug.Log("Inside Disable method");
+        StopAllCoroutines();
+    }
+
+    public PlayerList GetPlayers()
+    {
+        return players;
     }
 
     public Player GetCurrentPlayer()

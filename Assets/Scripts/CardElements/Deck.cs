@@ -60,21 +60,27 @@ namespace Assets.Scripts.CardElements
 
         public void SortByRankDesc()
         {
-            deck.Sort(delegate (Card lhs, Card rhs)
-            {
-                return rhs.GetRankValue() - lhs.GetRankValue();
-            });
+            SortByRankDescHelper sortBy = new SortByRankDescHelper();
+            deck.Sort(sortBy);
         }
 
         public void SortByRankAsc()
         {
-            deck.Sort(delegate (Card lhs, Card rhs)
-            {
-                return lhs.GetRankValue() - rhs.GetRankValue();
-            });
+            //deck.Sort(delegate (Card lhs, Card rhs)
+            //{
+            //    return lhs.GetRankValue().CompareTo( rhs.GetRankValue());
+            //});
+            //deck.Sort((IComparer<Card>)Card.SortByRank());
+
+            SortByRankAscHelper sortBy = new SortByRankAscHelper();
+            deck.Sort(sortBy);
+
         }
 
-       
+        public List<Card> getDeck()
+        {
+            return deck;
+        }
 
         public Card GetCardByIndex(int index)
         {

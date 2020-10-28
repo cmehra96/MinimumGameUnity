@@ -46,5 +46,36 @@ namespace Assets.Scripts.Player
         {
             return myDeck.Remove(touchedCard);
         }
+
+        public bool IsRoundWon()
+        {
+            return roundwon;
+        }
+
+        public void SetRoundWon(bool roundwon)
+        {
+            this.roundwon = roundwon;
+        }
+        public virtual void NotifyPlayerForTurn()
+        {
+            Debug.Log("Inside Notify Player For Turn Method");
+        }
+
+        public int EvaluateScore()
+        {
+            int score = 0;
+            foreach (Card card in myDeck.getDeck())
+            {
+                score += card.GetRankValue();
+            }
+            previousRoundScore = score;
+            Debug.Log("Score of " + name + "this round is " + score);
+            return score;
+        }
+
+        public int GetPreviousRoundScore()
+        {
+            return previousRoundScore;
+        }
     }
 }

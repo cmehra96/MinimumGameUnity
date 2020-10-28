@@ -19,7 +19,8 @@ namespace Assets.Scripts.CardElements
 
         public Card(Card card)
         {
-            this.card = card;
+            rank = card.rank;
+            suit = card.suit;
         }
 
         public override bool Equals(object other)
@@ -72,6 +73,39 @@ namespace Assets.Scripts.CardElements
                 return suit.ToString().ToLower() + rankToString();
             else
                 return "blueback";
+        }
+
+      
+       
+    }
+
+    public class SortByRankAscHelper : IComparer<Card>
+    {
+       public int Compare(Card x, Card y)
+        {
+            Card lhs = (Card)x;
+            Card rhs = (Card)y;
+            if (lhs.GetRankValue() > rhs.GetRankValue())
+                return 1;
+            else if (lhs.GetRankValue() < rhs.GetRankValue())
+                return -1;
+            else
+                return 0;
+        }
+    }
+
+    public class SortByRankDescHelper : IComparer<Card>
+    {
+        public int Compare(Card x, Card y)
+        {
+            Card lhs = (Card)x;
+            Card rhs = (Card)y;
+            if (lhs.GetRankValue() < rhs.GetRankValue())
+                return 1;
+            else if (lhs.GetRankValue() > rhs.GetRankValue())
+                return -1;
+            else
+                return 0;
         }
     }
 

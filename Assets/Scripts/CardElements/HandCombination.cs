@@ -31,7 +31,7 @@ namespace Assets.Scripts.CardElements
 
         public static bool IsStraight(Deck tempLongTouchList)
         {
-            tempLongTouchList.SortByRankAsc();
+            tempLongTouchList.SortByRankDesc();
             if (tempLongTouchList.GetCardByIndex(0).GetRankValue() == 1)       // If first card is Ace
             {
                 Card tempCard = tempLongTouchList.GetCardByIndex(0);
@@ -84,7 +84,7 @@ namespace Assets.Scripts.CardElements
         {
             Debug.Log("Inside IsStraight Method");
             Deck temp = new Deck(player.GetDeck());
-            temp.SortByRankAsc();
+            temp.SortByRankDesc();
             if (temp.GetCardByIndex(0).GetRankValue() == 1)
             {
                 Card tempCard = temp.GetCardByIndex(0);
@@ -120,7 +120,7 @@ namespace Assets.Scripts.CardElements
 
 
             temp.Add(card);
-            temp.SortByRankAsc();
+            temp.SortByRankDesc();
             if (temp.GetCardByIndex(0).GetRankValue() == 1)
             {
                 Card tempCard = temp.GetCardByIndex(0);
@@ -149,9 +149,10 @@ namespace Assets.Scripts.CardElements
 
         public static Deck GetStraight(Player.Player player)
         {
+            Debug.Log("Inside Get Straight method");
             Deck straightCards = new Deck(player.GetDeck());
             Deck temp = new Deck(player.GetDeck());
-            temp.SortByRankAsc();
+            temp.SortByRankDesc();
             if (temp.GetCardByIndex(0).GetRankValue() == 1)
                 temp.Add(temp.GetCardByIndex(0));
 
@@ -176,15 +177,16 @@ namespace Assets.Scripts.CardElements
             }
             if (temp.GetCardByIndex(0).GetRankValue() == 1)
                 temp.Remove(temp.GetTopCard());
-
+            Debug.Log("Get Straight method executed completely");
             return straightCards;
         }
 
         public static Card CreateStraight(Player.Player player, Card topCard)
         {
+            Debug.Log("Inside Create Straight Method");
             Card removeCard = null;
             Deck tempDeck = new Deck(player.GetDeck());
-            tempDeck.SortByRankAsc();
+            tempDeck.SortByRankDesc();
             if (tempDeck.GetCardByIndex(0).GetRankValue() == 1)
                 tempDeck.Add(tempDeck.GetCardByIndex(0));
             int decksize = tempDeck.CardsCount();
@@ -222,6 +224,8 @@ namespace Assets.Scripts.CardElements
             }
             if (tempDeck.GetCardByIndex(0).GetRankValue() == 1)
                 tempDeck.Remove(tempDeck.GetTopCard());
+            Debug.Log("Create Straight Method Executed successfully");
+
             return removeCard;
         }
 
@@ -235,6 +239,7 @@ namespace Assets.Scripts.CardElements
 
         public static bool isThreeOfKind(Player.Player player, Deck tempLongTouchList)
         {
+            Debug.Log("Inside Is Three Of Kind Method with Touched Cards Parameter");
             if (tempLongTouchList.CardsCount() != 3)
                 return false;
             if (tempLongTouchList.GetCardByIndex(0).GetRankValue() == tempLongTouchList.GetCardByIndex(1).GetRankValue()
@@ -254,7 +259,7 @@ namespace Assets.Scripts.CardElements
         /// 0 if no straight exist.</returns>
         public static int isThreeOfKind(Player.Player player, Card card)
         {
-
+            Debug.Log("Inside Is Three Of Kind Method with Discard Deck Parameter");
             Deck tempDeck = new Deck(player.GetDeck());
             tempDeck.SortByRankAsc();
             int count = tempDeck.CardsCount();
@@ -277,7 +282,6 @@ namespace Assets.Scripts.CardElements
         public static Deck GetThreeOfKind(Player.Player player)
         {
             Deck threeOfKind = new Deck(player.GetDeck());
-
             Deck tempDeck = player.GetDeck();
             int count = tempDeck.CardsCount();
             for (int i = 0; i < count - 2; i++)

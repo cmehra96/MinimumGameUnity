@@ -32,7 +32,7 @@ namespace Assets.Scripts.Listeners
 
         public void SayMinimum(Player.Player player)
         {
-            throw new NotImplementedException();
+            GameController.Instance.CallMinium(player);
         }
 
     }
