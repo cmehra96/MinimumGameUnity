@@ -51,7 +51,7 @@ namespace Assets.Scripts.CardElements
       
         private IEnumerator DistributeCardsToPlayer()
         {
-            
+            Debug.Log("Inside Distribute Cards To Player");
             for(int i=0;i< generatedCards.Count();i++)
             {
                 var cover = Instantiate(cardsBack, generatedCards[i].transform.position, Quaternion.identity, generatedCards[i].transform);
@@ -67,6 +67,7 @@ namespace Assets.Scripts.CardElements
             foreach (GameObject gameObject in generatedCards)
                 Destroy(gameObject);
             isCardDistributionCompleted = true;
+            Debug.Log("Card Distribution method executed succussfully");
         }
 
         public void PlayCardDistributionAnimation()

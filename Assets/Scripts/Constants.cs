@@ -9,6 +9,6 @@ namespace Assets.Scripts
     public static class Constants
     {
         public const float turnPlayerDelay = 1.1f;
-        public const float clearMethodDelay = 1.0f;
+        public const float clearMethodDelay = 0.5f;
     }
 }

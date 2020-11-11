@@ -10,7 +10,7 @@ public class GameView : MonoBehaviour
     public GameObject cardPrefab;
     public GameObject dealtDeckObject;
     public GameObject discardedDeckObject;
-
+    public bool isClearMethodCompleted = true;
     public static GameView Instance
     {
         get;
@@ -250,6 +250,27 @@ public class GameView : MonoBehaviour
             vector2.GetComponent<Image>().sprite = vector2.GetComponent<CardUI>().sprite;
             vector2.transform.SetParent(discardedDeckObject.transform);
         }
+    }
+
+    public void LoadClearMethod()
+    {
+        Debug.Log("Inside Load Clear Method");
+        IClearItems(PlayerUIMapping.Instance.cardholder[GameController.Instance.currentPlayerIndex]);
+        IClearItems(GameView.Instance.dealtDeckObject);
+        IClearItems(GameView.Instance.discardedDeckObject);
+        isClearMethodCompleted = true;
+    }
+
+    private void IClearItems(GameObject content)
+    {
+        for (int i = 0; i < content.transform.childCount; i++)
+        {
+            Destroy(content.transform.GetChild(i).gameObject);
+        }
+        new WaitUntil(() => content.transform.childCount == 0);
+
+        Debug.Log("Clear Item Method Executed Completely");
+
     }
 
     private void Awake()
