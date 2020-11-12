@@ -2,6 +2,7 @@
 using Assets.Scripts.CardElements;
 using Assets.Scripts.Listeners;
 using Assets.Scripts.Player;
+using Assets.Scripts.Utility;
 using DG.Tweening;
 using System;
 using System.Collections;
@@ -148,7 +149,7 @@ public class GameController : MonoBehaviour
                 RefillDeck();
             }
             GameView.Instance.isClearMethodCompleted = false;
-            SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay);
+            UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay));
         }
     }
 
@@ -178,7 +179,9 @@ public class GameController : MonoBehaviour
             RefillDeck();
         }
         GameView.Instance.isClearMethodCompleted = false;
-        SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay);
+
+        UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay));
+        
     }
 
     /// <summary>
@@ -264,7 +267,7 @@ public class GameController : MonoBehaviour
             player.AddToHand(temp);
             tempLongTouchedList.Clear();
             GameView.Instance.isClearMethodCompleted = false;
-            SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay);
+            UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay));
         }
     }
 
@@ -287,7 +290,9 @@ public class GameController : MonoBehaviour
         player.AddToHand(temp);
         this.touchedCard = null;    // Global variable
         GameView.Instance.isClearMethodCompleted = false;
-        SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay);
+
+        UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay)); 
+       
     }
 
 
@@ -330,10 +335,10 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void SwitchTurnToNextPlayer(bool isShowDownCalled, float delayTime)
+    public IEnumerator SwitchTurnToNextPlayer(bool isShowDownCalled, float delayTime)
     {
         Debug.Log("Inside Switch Turn To Next Player Method");
-        
+        yield return new WaitForSeconds(delayTime);
         int size = players.Count;
         if(isShowDownCalled)
         {
@@ -352,6 +357,7 @@ public class GameController : MonoBehaviour
        
         players[currentPlayerIndex].NotifyPlayerForTurn();
         Debug.Log("Switch Turn Method Executed Succussfully");
+        yield return new WaitForSeconds(delayTime);
 
     }
 

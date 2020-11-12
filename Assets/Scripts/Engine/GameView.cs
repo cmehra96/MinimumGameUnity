@@ -104,6 +104,10 @@ public class GameView : MonoBehaviour
     public void DrawPlayerAtTopLeft()
     {
         int cardcount = PlayerUIMapping.Instance.cardholder[2].transform.childCount;
+        if (GameController.Instance.GetCurrentPlayer() == GameController.Instance.players[2])
+            PlayerUIMapping.Instance.turnIndicators[2].SetActive(true);
+        else
+            PlayerUIMapping.Instance.turnIndicators[2].SetActive(false);
         if (cardcount == 0)
         {
 
@@ -130,6 +134,10 @@ public class GameView : MonoBehaviour
     public void DrawPlayerAtTopCenter()
     {
         int cardcount = PlayerUIMapping.Instance.cardholder[3].transform.childCount;
+        if (GameController.Instance.GetCurrentPlayer() == GameController.Instance.players[3])
+            PlayerUIMapping.Instance.turnIndicators[3].SetActive(true);
+        else
+            PlayerUIMapping.Instance.turnIndicators[3].SetActive(false);
         if (cardcount == 0)
         {
 
@@ -156,6 +164,10 @@ public class GameView : MonoBehaviour
     public void DrawPlayerAtTopRight()
     {
         int cardcount = PlayerUIMapping.Instance.cardholder[4].transform.childCount;
+        if (GameController.Instance.GetCurrentPlayer() == GameController.Instance.players[4])
+            PlayerUIMapping.Instance.turnIndicators[4].SetActive(true);
+        else
+            PlayerUIMapping.Instance.turnIndicators[4].SetActive(false);
         if (cardcount == 0)
         {
 
@@ -182,6 +194,10 @@ public class GameView : MonoBehaviour
     public void DrawPlayerAtRight()
     {
         int cardcount = PlayerUIMapping.Instance.cardholder[5].transform.childCount;
+        if (GameController.Instance.GetCurrentPlayer() == GameController.Instance.players[5])
+            PlayerUIMapping.Instance.turnIndicators[5].SetActive(true);
+        else
+            PlayerUIMapping.Instance.turnIndicators[5].SetActive(false);
         if (cardcount == 0)
         {
 
