@@ -10,7 +10,7 @@ namespace Assets.Scripts.Utility
 	{
 
 		private static readonly Queue<Action> _executionQueue = new Queue<Action>();
-
+		public delegate void Task();
 		public void Update()
 		{
 			lock (_executionQueue)
@@ -37,6 +37,33 @@ namespace Assets.Scripts.Utility
 		}
 
 		/// <summary>
+		/// Locks the queue and adds the IEnumerator to the queue
+		/// </summary>
+		/// <param name="action">IEnumerator function that will be executed from the main thread.</param>
+		public void Enqueue(Task task, float delay)
+		{
+			lock (_executionQueue)
+			{
+				_executionQueue.Enqueue(() => {
+					StartCoroutine(DoTask(task, delay));
+				});
+			}
+		}
+
+		public static void Schedule(Task task, float delay)
+        {
+			Instance().Enqueue(task, delay);
+
+		}
+
+		private static IEnumerator DoTask(Task task, float delay)
+		{
+			Debug.Log("Inside DoTask Coroutine");
+			yield return new WaitForSeconds(delay);
+			task();
+		}
+
+		/// <summary>
 		/// Locks the queue and adds the Action to the queue
 		/// </summary>
 		/// <param name="action">function that will be executed from the main thread.</param>
@@ -50,26 +77,26 @@ namespace Assets.Scripts.Utility
 		/// </summary>
 		/// <param name="action">function that will be executed from the main thread.</param>
 		/// <returns>A Task that can be awaited until the action completes</returns>
-		public Task EnqueueAsync(Action action)
-		{
-			var tcs = new TaskCompletionSource<bool>();
+		//public Task EnqueueAsync(Action action)
+		//{
+		//	var tcs = new TaskCompletionSource<bool>();
 
-			void WrappedAction()
-			{
-				try
-				{
-					action();
-					tcs.TrySetResult(true);
-				}
-				catch (Exception ex)
-				{
-					tcs.TrySetException(ex);
-				}
-			}
+		//	void WrappedAction()
+		//	{
+		//		try
+		//		{
+		//			action();
+		//			tcs.TrySetResult(true);
+		//		}
+		//		catch (Exception ex)
+		//		{
+		//			tcs.TrySetException(ex);
+		//		}
+		//	}
 
-			Enqueue(ActionWrapper(WrappedAction));
-			return tcs.Task;
-		}
+		//	Enqueue(ActionWrapper(WrappedAction));
+		//	return tcs.Task;
+		//}
 
 
 		IEnumerator ActionWrapper(Action a)

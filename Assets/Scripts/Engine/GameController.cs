@@ -135,12 +135,12 @@ public class GameController : MonoBehaviour
                 Card removeCard = player.RemoveCard(tempLongTouchedList.GetCardByIndex(i));
                 DiscardedDeck.Add(removeCard);
                 i++;
-              //  StartCoroutine(SingleSwapAnimationFromDealtDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], removeCard,
-          // CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], false));
+                UnityMainThreadDispatcher.Instance().Enqueue(SingleSwapAnimationFromDealtDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], removeCard,
+           CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], false));
 
             }
-          //  StartCoroutine(SingleSwapAnimationFromDealtDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], null,
-         //  CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], true));
+            UnityMainThreadDispatcher.Instance().Enqueue(SingleSwapAnimationFromDealtDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], null,
+           CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], true));
             player.AddToHand(temp);
             tempLongTouchedList.Clear();
             if(DealtDeck.CardsCount()==0)
@@ -166,8 +166,8 @@ public class GameController : MonoBehaviour
         Debug.Log("Inside Single Swap Dealt Deck Method");
         Card temp = DealtDeck.Deal();
         Debug.Log("Dealt Deck touched card" + temp.GetCardImageName());
-      //  StartCoroutine(SingleSwapAnimationFromDealtDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], touchedCard,
-       //     CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], true));
+        UnityMainThreadDispatcher.Instance().Enqueue(SingleSwapAnimationFromDealtDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], touchedCard,
+            CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], true));
         Debug.Log("Card to be swapped " + touchedCard.GetCardImageName());
         Card temp1 = player.RemoveCard(touchedCard);
         player.AddToHand(temp);
@@ -178,7 +178,7 @@ public class GameController : MonoBehaviour
             Debug.Log("Dealt Deck empty refilling");
             RefillDeck();
         }
-        GameView.Instance.isClearMethodCompleted = false;
+        UnityMainThreadDispatcher.Schedule(() => GameView.Instance.LoadClearMethod(), Constants.clearMethodDelay);
 
         UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay));
         
@@ -259,11 +259,11 @@ public class GameController : MonoBehaviour
                 Card removeCard = player.RemoveCard(tempLongTouchedList.GetCardByIndex(i));
                 DiscardedDeck.Add(removeCard);
                 i++;
-          //      StartCoroutine(SingleSwapAnimationFromDiscardedDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], removeCard,
-           //CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], false));
+                UnityMainThreadDispatcher.Instance().Enqueue(SingleSwapAnimationFromDiscardedDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], removeCard,
+           CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], false));
             }
-           // StartCoroutine(SingleSwapAnimationFromDiscardedDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], null,
-          // CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], true));
+            UnityMainThreadDispatcher.Instance().Enqueue(SingleSwapAnimationFromDiscardedDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], null,
+           CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], true));
             player.AddToHand(temp);
             tempLongTouchedList.Clear();
             GameView.Instance.isClearMethodCompleted = false;
@@ -280,8 +280,8 @@ public class GameController : MonoBehaviour
     public void SingleSwapFromDiscardedDeck(Player player, Card touchedCard)
     {
         Debug.Log("Inside Single Swap Discarded Deck Method");
-       // StartCoroutine(SingleSwapAnimationFromDiscardedDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], touchedCard,
-       //    CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], true));
+        UnityMainThreadDispatcher.Instance().Enqueue(SingleSwapAnimationFromDiscardedDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], touchedCard,
+           CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], true));
         Card temp = DiscardedDeck.Deal();
         Card temp2 = player.RemoveCard(touchedCard);
         Debug.Log("Card to be swapped " + touchedCard.GetCardImageName());
@@ -289,7 +289,7 @@ public class GameController : MonoBehaviour
         DiscardedDeck.Add(temp2);
         player.AddToHand(temp);
         this.touchedCard = null;    // Global variable
-        GameView.Instance.isClearMethodCompleted = false;
+        UnityMainThreadDispatcher.Schedule(() => GameView.Instance.LoadClearMethod(), Constants.clearMethodDelay);
 
         UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay)); 
        
@@ -422,8 +422,8 @@ public class GameController : MonoBehaviour
             GameView.Instance.DrawPlayerAtRight();
         }
 
-        if (GameView.Instance.isClearMethodCompleted == false)
-            GameView.Instance.LoadClearMethod();
+        //if (GameView.Instance.isClearMethodCompleted == false)
+        //    GameView.Instance.LoadClearMethod();
         
 
     }
