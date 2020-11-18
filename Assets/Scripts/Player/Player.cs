@@ -77,5 +77,10 @@ namespace Assets.Scripts.Player
         {
             return previousRoundScore;
         }
+
+        public string GetName()
+        {
+            return name;
+        }
     }
 }

@@ -25,7 +25,7 @@ public class GameController : MonoBehaviour
     public int currentPlayerIndex = 0;
     private Deck tempLongTouchedList = new Deck();
     private GameObject[] PlayerGameObject= new GameObject[6];
-
+    public Popup exitPopup;
 
     public static GameController Instance
     {
@@ -65,7 +65,7 @@ public class GameController : MonoBehaviour
 
     public void CallMinium(Player player)
     {
-        throw new NotImplementedException();
+        Debug.Log("Minimum is called by " + player.GetName());
     }
 
     private void InitialisePlayers()
@@ -96,6 +96,12 @@ public class GameController : MonoBehaviour
         {
             tempLongTouchedList.Add(players[0].GetCardByIndex(cardindex));
         }
+    }
+
+    public void CallMinimumClicked()
+    {
+        Debug.Log("Minimum Button Clicked");
+        CallMinium(mainPlayer);
     }
 
     /// <summary>
@@ -422,10 +428,44 @@ public class GameController : MonoBehaviour
             GameView.Instance.DrawPlayerAtRight();
         }
 
-        //if (GameView.Instance.isClearMethodCompleted == false)
-        //    GameView.Instance.LoadClearMethod();
-        
+        if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 1f)
+        {
+            Debug.Log("Back Key Pressed");
+            if (Popup.currentPopup != null && Popup.currentPopup.closeOnEsc)
+            {
+                Popup.currentPopup.HidePopup();
+            }
+            else if (Popup.currentPopup == null)
+            {
+                
+                ShowExit();
+            }
+        }
 
+
+    }
+
+    public void ShowExit()
+    {
+        exitPopup.ShowPopup();
+    }
+    public void HideExit()
+    {
+        exitPopup.HidePopup();
+    }
+
+    public void CloseGame()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenuScreen");
+    }
+
+    public void RestartGame()
+    {
+        UnityMainThreadDispatcher.Schedule(() =>
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
+        }, 0.5f);
+        
     }
 
     private void OnDisable()

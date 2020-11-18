@@ -8,6 +8,7 @@ namespace Assets.Scripts.Player
     {
         public List<GameObject> cardholder;        // Base of which cards are drawn for each Player
         public List<GameObject> turnIndicators;       //Holder for turn of each player
+        public GameObject btn_min;                     // Minimum Button
 
         public static PlayerUIMapping Instance
         {
