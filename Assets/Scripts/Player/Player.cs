@@ -82,5 +82,21 @@ namespace Assets.Scripts.Player
         {
             return name;
         }
+
+        public void AddScore(int roundscore)
+        {
+            currentRoundScore = roundscore;
+            this.score += roundscore;
+        }
+
+        public int GetCurrentRoundScore()
+        {
+            return currentRoundScore;
+        }
+
+        public int GetTotalScore()
+        {
+            return score;
+        }
     }
 }

@@ -25,7 +25,7 @@ public class GameController : MonoBehaviour
     public int currentPlayerIndex = 0;
     private Deck tempLongTouchedList = new Deck();
     private GameObject[] PlayerGameObject= new GameObject[6];
-    public Popup exitPopup;
+    public Popup exitPopup,scoreboardPopup;
 
     public static GameController Instance
     {
@@ -63,9 +63,64 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void CallMinium(Player player)
+    public void CallMinium(Player currentPlayer)
     {
-        Debug.Log("Minimum is called by " + player.GetName());
+        Debug.Log("Minimum is called by " + currentPlayer.GetName());
+        bool roundwon = true;
+        Player winnerPlayer = currentPlayer;
+        int roundScore = currentPlayer.EvaluateScore();
+        Debug.Log(currentPlayer.GetName() + " round score is " + roundScore);
+        for(int i=0;i<players.Count;i++)
+        { Player player = players[i];
+            if (player == currentPlayer)
+                continue;
+            int playerRoundScore = player.EvaluateScore();
+            Debug.Log(player.GetName() + " round score is " + playerRoundScore);
+            if(roundScore>=playerRoundScore)
+            {
+                roundwon = false;
+                winnerPlayer = player;
+                roundScore = playerRoundScore;
+            }
+        }
+        if(roundwon)
+        {
+            for(int i=0;i<players.Count;i++)
+            {
+                Player player = players[i];
+                if (player==currentPlayer)
+                {
+                    player.SetRoundWon(true);
+                    player.AddScore(0);
+                    continue;
+                }
+                player.AddScore(player.EvaluateScore());
+                player.SetRoundWon(false);
+            }
+        }
+        else
+        {
+            for(int i=0;i<players.Count;i++)
+            {
+                Player player = players[i];
+                if (player == currentPlayer)
+                {
+                    player.SetRoundWon(false);
+                    player.AddScore(2* player.EvaluateScore());     // Double Points added if call player loose
+                    continue;
+                }
+                player.AddScore(0);
+               
+            }
+            players[players.IndexOf(winnerPlayer)].SetRoundWon(true); // Index of player who won the round.
+        }
+        Debug.Log("Winner of this round is " + winnerPlayer.GetName());
+        UnityMainThreadDispatcher.Schedule(() => 
+        {
+            scoreboardPopup.ShowPopup();
+        }
+        , 0.5f);
+       
     }
 
     private void InitialisePlayers()
