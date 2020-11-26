@@ -33,7 +33,7 @@ namespace Assets.Scripts.CardElements
             int size = 0;
             if (generatedCards.Count > 0)
                 generatedCards.Clear();
-            GameObject distributionobject = GameObject.Find("CardDistributionAnimation");
+            GameObject distributionobject = GameObject.Find("CardDistributionObject");
             if (isNewGame)
                 size = playersPosition.Count * 2;
             else
@@ -70,9 +70,10 @@ namespace Assets.Scripts.CardElements
             Debug.Log("Card Distribution method executed succussfully");
         }
 
-        public void PlayCardDistributionAnimation()
+        public void PlayCardDistributionAnimation(bool isNewGame)
         {
-            generateCards(true);
+            isCardDistributionCompleted = false;
+            generateCards(isNewGame);
             StartCoroutine(DistributeCardsToPlayer());
         }
 

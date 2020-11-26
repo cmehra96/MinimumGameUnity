@@ -79,27 +79,43 @@ public class GameView : MonoBehaviour
             PlayerUIMapping.Instance.turnIndicators[1].SetActive(true);
         else
             PlayerUIMapping.Instance.turnIndicators[1].SetActive(false);
+        bool showCardFace = GameController.Instance.players[1].GetShowCard();
+        int decksize = GameController.Instance.players[1].GetDeck().CardsCount();
         if (cardcount == 0)
         {
-
-            int decksize = GameController.Instance.players[1].GetDeck().CardsCount();
-
             for (int i = 0; i < decksize; i++)
             {
+
                 Card currentCard = GameController.Instance.players[1].GetCardByIndex(i);
                 GameObject vector2 = Object.Instantiate<GameObject>(this.cardPrefab, PlayerUIMapping.Instance.cardholder[1].transform);
                 vector2.transform.localRotation = Quaternion.Euler(Vector3.zero);
                 float totalWidht = PlayerUIMapping.Instance.cardholder[1].GetComponent<RectTransform>().sizeDelta.x;
-                string str = "Cards/" + currentCard.GetCardImageName(true);
+                string str = "Cards/" + currentCard.GetCardImageName(showCardFace);
                 Sprite sprite = Resources.Load<Sprite>(str);
                 vector2.GetComponent<CardUI>().sprite = sprite;
                 // vector2.GetComponent<CardUI>().UpdateSpriteRender(sprite);
                 vector2.GetComponent<CardUI>().card = currentCard;
                 // vector2.GetComponent<RectTransform>().sizeDelta = new Vector2(0.08f * Screen.width, 0.2f * Screen.height);
                 // vector2.GetComponent<RectTransform>().localScale = Vector3.one;
-                CardUI cardUI = vector2.GetComponent<CardUI>();
+                
                 vector2.GetComponent<Image>().sprite = vector2.GetComponent<CardUI>().sprite;
                 vector2.transform.SetParent(PlayerUIMapping.Instance.cardholder[1].transform);
+            }
+
+        }
+        else
+        {
+            int i = 0;
+            foreach (Transform child in PlayerUIMapping.Instance.cardholder[1].transform)
+            {
+                Card currentCard = GameController.Instance.players[1].GetCardByIndex(i++);
+                if (currentCard != null)
+                {
+                    string str = "Cards/" + currentCard.GetCardImageName(showCardFace);
+                    Sprite sprite = Resources.Load<Sprite>(str);
+                    child.GetComponent<CardUI>().sprite = sprite;
+                    child.GetComponent<Image>().sprite = sprite;
+                }
             }
         }
     }
@@ -112,24 +128,40 @@ public class GameView : MonoBehaviour
             PlayerUIMapping.Instance.turnIndicators[2].SetActive(true);
         else
             PlayerUIMapping.Instance.turnIndicators[2].SetActive(false);
+        bool showCardFace = GameController.Instance.players[2].GetShowCard();
         if (cardcount == 0)
         {
 
             int decksize = GameController.Instance.players[2].GetDeck().CardsCount();
-
+           
             for (int i = 0; i < decksize; i++)
             {
                 Card currentCard = GameController.Instance.players[2].GetCardByIndex(i);
                 GameObject vector2 = Object.Instantiate<GameObject>(this.cardPrefab, PlayerUIMapping.Instance.cardholder[2].transform);
                 vector2.transform.localRotation = Quaternion.Euler(Vector3.zero);
                 float totalWidht = PlayerUIMapping.Instance.cardholder[2].GetComponent<RectTransform>().sizeDelta.x;
-                string str = "Cards/" + currentCard.GetCardImageName(true);
+                string str = "Cards/" + currentCard.GetCardImageName(showCardFace);
                 Sprite sprite = Resources.Load<Sprite>(str);
                 vector2.GetComponent<CardUI>().sprite = sprite;
                 vector2.GetComponent<CardUI>().card = currentCard;
                 CardUI cardUI = vector2.GetComponent<CardUI>();
                 vector2.GetComponent<Image>().sprite = vector2.GetComponent<CardUI>().sprite;
                 vector2.transform.SetParent(PlayerUIMapping.Instance.cardholder[2].transform);
+            }
+        }
+        else
+        {
+            int i = 0;
+            foreach (Transform child in PlayerUIMapping.Instance.cardholder[2].transform)
+            {
+                Card currentCard = GameController.Instance.players[2].GetCardByIndex(i++);
+                if (currentCard != null)
+                {
+                    string str = "Cards/" + currentCard.GetCardImageName(showCardFace);
+                    Sprite sprite = Resources.Load<Sprite>(str);
+                    child.GetComponent<CardUI>().sprite = sprite;
+                    child.GetComponent<Image>().sprite = sprite;
+                }
             }
         }
     }
@@ -142,18 +174,19 @@ public class GameView : MonoBehaviour
             PlayerUIMapping.Instance.turnIndicators[3].SetActive(true);
         else
             PlayerUIMapping.Instance.turnIndicators[3].SetActive(false);
+        bool showCardFace = GameController.Instance.players[3].GetShowCard();
         if (cardcount == 0)
         {
 
             int decksize = GameController.Instance.players[3].GetDeck().CardsCount();
-
+            
             for (int i = 0; i < decksize; i++)
             {
                 Card currentCard = GameController.Instance.players[3].GetCardByIndex(i);
                 GameObject vector2 = Object.Instantiate<GameObject>(this.cardPrefab, PlayerUIMapping.Instance.cardholder[3].transform);
                 vector2.transform.localRotation = Quaternion.Euler(Vector3.zero);
                 float totalWidht = PlayerUIMapping.Instance.cardholder[1].GetComponent<RectTransform>().sizeDelta.x;
-                string str = "Cards/" + currentCard.GetCardImageName(true);
+                string str = "Cards/" + currentCard.GetCardImageName(showCardFace);
                 Sprite sprite = Resources.Load<Sprite>(str);
                 vector2.GetComponent<CardUI>().sprite = sprite;
                 vector2.GetComponent<CardUI>().card = currentCard;
@@ -161,6 +194,22 @@ public class GameView : MonoBehaviour
                 vector2.GetComponent<Image>().sprite = vector2.GetComponent<CardUI>().sprite;
 
                 vector2.transform.SetParent(PlayerUIMapping.Instance.cardholder[3].transform);
+            }
+        }
+
+        else
+        {
+            int i = 0;
+            foreach (Transform child in PlayerUIMapping.Instance.cardholder[3].transform)
+            {
+                Card currentCard = GameController.Instance.players[3].GetCardByIndex(i++);
+                if (currentCard != null)
+                {
+                    string str = "Cards/" + currentCard.GetCardImageName(showCardFace);
+                    Sprite sprite = Resources.Load<Sprite>(str);
+                    child.GetComponent<CardUI>().sprite = sprite;
+                    child.GetComponent<Image>().sprite = sprite;
+                }
             }
         }
     }
@@ -172,18 +221,19 @@ public class GameView : MonoBehaviour
             PlayerUIMapping.Instance.turnIndicators[4].SetActive(true);
         else
             PlayerUIMapping.Instance.turnIndicators[4].SetActive(false);
+        bool showCardFace = GameController.Instance.players[4].GetShowCard();
         if (cardcount == 0)
         {
 
             int decksize = GameController.Instance.players[4].GetDeck().CardsCount();
-
+           
             for (int i = 0; i < decksize; i++)
             {
                 Card currentCard = GameController.Instance.players[4].GetCardByIndex(i);
                 GameObject vector2 = Object.Instantiate<GameObject>(this.cardPrefab, PlayerUIMapping.Instance.cardholder[4].transform);
                 vector2.transform.localRotation = Quaternion.Euler(Vector3.zero);
                 float totalWidht = PlayerUIMapping.Instance.cardholder[4].GetComponent<RectTransform>().sizeDelta.x;
-                string str = "Cards/" + currentCard.GetCardImageName(true);
+                string str = "Cards/" + currentCard.GetCardImageName(showCardFace);
                 Sprite sprite = Resources.Load<Sprite>(str);
                 vector2.GetComponent<CardUI>().sprite = sprite;
                 vector2.GetComponent<CardUI>().card = currentCard;
@@ -191,6 +241,22 @@ public class GameView : MonoBehaviour
                 vector2.GetComponent<Image>().sprite = vector2.GetComponent<CardUI>().sprite;
 
                 vector2.transform.SetParent(PlayerUIMapping.Instance.cardholder[4].transform);
+            }
+        }
+
+        else
+        {
+            int i = 0;
+            foreach (Transform child in PlayerUIMapping.Instance.cardholder[4].transform)
+            {
+                Card currentCard = GameController.Instance.players[4].GetCardByIndex(i++);
+                if (currentCard != null)
+                {
+                    string str = "Cards/" + currentCard.GetCardImageName(showCardFace);
+                    Sprite sprite = Resources.Load<Sprite>(str);
+                    child.GetComponent<CardUI>().sprite = sprite;
+                    child.GetComponent<Image>().sprite = sprite;
+                }
             }
         }
     }
@@ -202,18 +268,19 @@ public class GameView : MonoBehaviour
             PlayerUIMapping.Instance.turnIndicators[5].SetActive(true);
         else
             PlayerUIMapping.Instance.turnIndicators[5].SetActive(false);
+        bool showCardFace = GameController.Instance.players[5].GetShowCard();
         if (cardcount == 0)
         {
 
             int decksize = GameController.Instance.players[5].GetDeck().CardsCount();
-
+            
             for (int i = 0; i < decksize; i++)
             {
                 Card currentCard = GameController.Instance.players[5].GetCardByIndex(i);
                 GameObject vector2 = Object.Instantiate<GameObject>(this.cardPrefab, PlayerUIMapping.Instance.cardholder[5].transform);
                 vector2.transform.localRotation = Quaternion.Euler(Vector3.zero);
                 float totalWidht = PlayerUIMapping.Instance.cardholder[5].GetComponent<RectTransform>().sizeDelta.x;
-                string str = "Cards/" + currentCard.GetCardImageName(true);
+                string str = "Cards/" + currentCard.GetCardImageName(showCardFace);
                 Sprite sprite = Resources.Load<Sprite>(str);
                 vector2.GetComponent<CardUI>().sprite = sprite;
                 vector2.GetComponent<CardUI>().card = currentCard;
@@ -221,6 +288,22 @@ public class GameView : MonoBehaviour
                 vector2.GetComponent<Image>().sprite = vector2.GetComponent<CardUI>().sprite;
 
                 vector2.transform.SetParent(PlayerUIMapping.Instance.cardholder[5].transform);
+            }
+        }
+
+        else
+        {
+            int i = 0;
+            foreach (Transform child in PlayerUIMapping.Instance.cardholder[5].transform)
+            {
+                Card currentCard = GameController.Instance.players[5].GetCardByIndex(i++);
+                if (currentCard != null)
+                {
+                    string str = "Cards/" + currentCard.GetCardImageName(showCardFace);
+                    Sprite sprite = Resources.Load<Sprite>(str);
+                    child.GetComponent<CardUI>().sprite = sprite;
+                    child.GetComponent<Image>().sprite = sprite;
+                }
             }
         }
     }
@@ -235,7 +318,7 @@ public class GameView : MonoBehaviour
             Card currentCard = GameController.Instance.DealtDeck.GetTopCard();
             GameObject vector2 = Object.Instantiate<GameObject>(this.cardPrefab, dealtDeckObject.transform);
             vector2.transform.rotation = Quaternion.Euler(Vector3.zero);
-            string str = "Cards/" + currentCard.GetCardImageName(true);
+            string str = "Cards/" + currentCard.GetCardImageName(false);
             Sprite sprite = Resources.Load<Sprite>(str);
             RectTransform rt = vector2.GetComponent<RectTransform>();
             vector2.GetComponent<CardUI>().sprite = sprite;
@@ -272,10 +355,15 @@ public class GameView : MonoBehaviour
         }
     }
 
-    public void LoadClearMethod()
+    public void LoadClearMethod(int index =-1)
     {
         Debug.Log("Inside Load Clear Method");
-        IClearItems(PlayerUIMapping.Instance.cardholder[GameController.Instance.currentPlayerIndex]);
+        if (index <0)
+        {
+            IClearItems(PlayerUIMapping.Instance.cardholder[GameController.Instance.currentPlayerIndex]);
+        }
+        else
+            IClearItems(PlayerUIMapping.Instance.cardholder[index]);
         IClearItems(GameView.Instance.dealtDeckObject);
         IClearItems(GameView.Instance.discardedDeckObject);
         isClearMethodCompleted = true;

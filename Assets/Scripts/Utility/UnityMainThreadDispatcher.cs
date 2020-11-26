@@ -11,6 +11,7 @@ namespace Assets.Scripts.Utility
 
 		private static readonly Queue<Action> _executionQueue = new Queue<Action>();
 		public delegate void Task();
+		public List<System.Threading.Tasks.Task> TaskList = new List<System.Threading.Tasks.Task>();
 		public void Update()
 		{
 			lock (_executionQueue)
@@ -51,10 +52,16 @@ namespace Assets.Scripts.Utility
 		}
 
 		public static void Schedule(Task task, float delay)
-        {
+		{
+			Debug.Log("Task Scheduled " + task.Method);
 			Instance().Enqueue(task, delay);
 
 		}
+		public static void ScheduleList(List<Task> tasks, float delay)
+        {
+			foreach (Task task in tasks)
+				Schedule(task, delay);
+        }
 
 		private static IEnumerator DoTask(Task task, float delay)
 		{

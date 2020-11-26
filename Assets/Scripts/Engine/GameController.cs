@@ -26,6 +26,7 @@ public class GameController : MonoBehaviour
     private Deck tempLongTouchedList = new Deck();
     private GameObject[] PlayerGameObject= new GameObject[6];
     public Popup exitPopup,scoreboardPopup;
+    private int roundCounter = 0;
 
     public static GameController Instance
     {
@@ -47,17 +48,12 @@ public class GameController : MonoBehaviour
 
     private void DistributeCards()
     {
-        CardDistributionAnimation.instance.PlayCardDistributionAnimation();
+        CardDistributionAnimation.instance.PlayCardDistributionAnimation(true);
         DealtDeck.AllocateDeck();
         DealtDeck.Shuffle();
         DiscardedDeck.Add(DealtDeck.Deal());
         for (int i = 0; i < players.Count; i++)
         {
-            players[i].AddToHand(DealtDeck.Deal());
-            players[i].AddToHand(DealtDeck.Deal());
-            players[i].AddToHand(DealtDeck.Deal());
-            players[i].AddToHand(DealtDeck.Deal());
-            players[i].AddToHand(DealtDeck.Deal());
             players[i].AddToHand(DealtDeck.Deal());
             players[i].AddToHand(DealtDeck.Deal());
         }
@@ -72,6 +68,7 @@ public class GameController : MonoBehaviour
         Debug.Log(currentPlayer.GetName() + " round score is " + roundScore);
         for(int i=0;i<players.Count;i++)
         { Player player = players[i];
+            player.SetShowCard(true);
             if (player == currentPlayer)
                 continue;
             int playerRoundScore = player.EvaluateScore();
@@ -120,7 +117,33 @@ public class GameController : MonoBehaviour
             scoreboardPopup.ShowPopup();
         }
         , 0.5f);
+        UnityMainThreadDispatcher.Schedule(() =>
+        {
+            scoreboardPopup.HidePopup();
+        }
+        , 5.0f);
+        //UnityMainThreadDispatcher.Schedule(() =>
+        //{
+        //    CardDistributionAnimation.instance.PlayCardDistributionAnimation(false);
+        //    StartNextRound();
+        //}
+        //, 5.0f);
+        UnityMainThreadDispatcher.ScheduleList(new List<UnityMainThreadDispatcher.Task>
+        {
+            ()=>
+            {
+            CardDistributionAnimation.instance.PlayCardDistributionAnimation(false);
+            },
+             ()=>
+            {
+           StartNextRound();
+            }
+
+        }
+            , 0.5f);
+
        
+
     }
 
     private void InitialisePlayers()
@@ -457,6 +480,21 @@ public class GameController : MonoBehaviour
         }
     }
 
+    private void StartNextRound()
+    {
+        Debug.Log("Starting round " + (++roundCounter));
+        
+        for (int i=0;i<players.Count;i++)
+        {
+            players[i].SetShowCard(false);
+            if (DealtDeck.CardsCount() == 0)
+                RefillDeck();
+            GameView.Instance.LoadClearMethod(i);
+            players[i].AddToHand(DealtDeck.Deal());
+            
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -466,6 +504,7 @@ public class GameController : MonoBehaviour
         }
         if (!initialise)
             InitialiseGame();
+
     }
 
     private void Update()

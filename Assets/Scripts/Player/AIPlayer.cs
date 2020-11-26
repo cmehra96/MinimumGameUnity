@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.CardElements;
+using Assets.Scripts.Utility;
 using System;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -17,7 +18,12 @@ namespace Assets.Scripts.Player
         public override void NotifyPlayerForTurn()
         {
             Debug.Log("Inside Notify AIPlayer For Turn Method");
-            Task task = Task.Factory.StartNew(() => ChoseActionToPlayAndInformListeners());
+            
+            UnityMainThreadDispatcher.Schedule(() =>
+            {
+                ChoseActionToPlayAndInformListeners();
+            },
+            0.5f);
         }
         /// <summary>
         /// Method to decide which action to be taken by Player based on call percent calculation
@@ -26,7 +32,7 @@ namespace Assets.Scripts.Player
         {
             int callPercent = GetCallPercent(GameController.Instance.GetPlayers(), this);
             Debug.Log("Call Percent" + callPercent);
-            if (callPercent >= 101)
+            if (callPercent >= 75)
             {
                 listener.SayMinimum(this);
             }

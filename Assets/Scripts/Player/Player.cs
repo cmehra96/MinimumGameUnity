@@ -18,6 +18,7 @@ namespace Assets.Scripts.Player
         protected int score;
         protected int currentRoundScore = 0;
         protected PlayerEventListener listener= new PlayerEventListener();
+        protected bool showCardFace = false;
 
         public Player(string name)
         {
@@ -94,9 +95,20 @@ namespace Assets.Scripts.Player
             return currentRoundScore;
         }
 
+        public void SetShowCard(bool showCardFace)
+        {
+            this.showCardFace = showCardFace;
+        }
+
         public int GetTotalScore()
         {
             return score;
         }
+
+        public bool GetShowCard()
+        {
+            return showCardFace;
+        }
+
     }
 }
