@@ -7,6 +7,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -116,7 +117,7 @@ public class GameController : MonoBehaviour
         {
             scoreboardPopup.ShowPopup();
         }
-        , 0.5f);
+        , 5.0f);
         UnityMainThreadDispatcher.Schedule(() =>
         {
             scoreboardPopup.HidePopup();
@@ -128,22 +129,13 @@ public class GameController : MonoBehaviour
         //    StartNextRound();
         //}
         //, 5.0f);
-        UnityMainThreadDispatcher.ScheduleList(new List<UnityMainThreadDispatcher.Task>
-        {
-            ()=>
-            {
-            CardDistributionAnimation.instance.PlayCardDistributionAnimation(false);
-            },
-             ()=>
-            {
-           StartNextRound();
-            }
 
-        }
-            , 0.5f);
-
-       
-
+        UnityMainThreadDispatcher.Schedule(() =>
+       {
+           CardDistributionAnimation.instance.PlayCardDistributionAnimation(false);
+        },0.5f);
+        
+        UnityMainThreadDispatcher.Schedule(() => StartNextRound(),0.5f);
     }
 
     private void InitialisePlayers()

@@ -10,6 +10,7 @@ namespace Assets.Scripts.Utility
 	{
 
 		private static readonly Queue<Action> _executionQueue = new Queue<Action>();
+		private Queue<IEnumerator> coroutineQueue = new Queue<IEnumerator>();
 		public delegate void Task();
 		public List<System.Threading.Tasks.Task> TaskList = new List<System.Threading.Tasks.Task>();
 		public void Update()
@@ -54,7 +55,8 @@ namespace Assets.Scripts.Utility
 		public static void Schedule(Task task, float delay)
 		{
 			Debug.Log("Task Scheduled " + task.Method);
-			Instance().Enqueue(task, delay);
+			//Instance().Enqueue(task, delay);
+			Instance().coroutineQueue.Enqueue(DoTask(task, delay));
 
 		}
 		public static void ScheduleList(List<Task> tasks, float delay)
@@ -68,6 +70,16 @@ namespace Assets.Scripts.Utility
 			Debug.Log("Inside DoTask Coroutine");
 			yield return new WaitForSeconds(delay);
 			task();
+		}
+
+		IEnumerator CoroutineCoordinator()
+		{
+			while (true)
+			{
+				while (coroutineQueue.Count > 0)
+					yield return StartCoroutine(coroutineQueue.Dequeue());
+				yield return null;
+			}
 		}
 
 		/// <summary>
@@ -129,8 +141,13 @@ namespace Assets.Scripts.Utility
 			return _instance;
 		}
 
+        private void Start()
+        {
+			StartCoroutine(CoroutineCoordinator());
+		}
 
-		void Awake()
+
+        void Awake()
 		{
 			if (_instance == null)
 			{

@@ -79,7 +79,7 @@ public class GameView : MonoBehaviour
             PlayerUIMapping.Instance.turnIndicators[1].SetActive(true);
         else
             PlayerUIMapping.Instance.turnIndicators[1].SetActive(false);
-        bool showCardFace = GameController.Instance.players[1].GetShowCard();
+        bool showCardFace = true;
         int decksize = GameController.Instance.players[1].GetDeck().CardsCount();
         if (cardcount == 0)
         {
