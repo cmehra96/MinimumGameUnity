@@ -62,6 +62,7 @@ public class GameController : MonoBehaviour
 
     public void CallMinium(Player currentPlayer)
     {
+        
         Debug.Log("Minimum is called by " + currentPlayer.GetName());
         bool roundwon = true;
         Player winnerPlayer = currentPlayer;
@@ -112,6 +113,12 @@ public class GameController : MonoBehaviour
             }
             players[players.IndexOf(winnerPlayer)].SetRoundWon(true); // Index of player who won the round.
         }
+        UnityMainThreadDispatcher.Schedule(() =>
+        {
+            ShowMessage("Minimum!");
+        }
+        , 0.3f);
+        
         Debug.Log("Winner of this round is " + winnerPlayer.GetName());
         UnityMainThreadDispatcher.Schedule(() => 
         {
@@ -487,6 +494,12 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public void ShowMessage(string message)
+    {
+        PlayerUIMapping.Instance.message[0].text = message;
+        PlayerUIMapping.Instance.message[0].enabled = true;
+        PlayerUIMapping.Instance.message[0].GetComponent<Animator>().SetTrigger("display");
+    }
     // Start is called before the first frame update
     void Start()
     {

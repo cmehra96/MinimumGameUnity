@@ -72,7 +72,7 @@ namespace Assets.Scripts.CardElements
 
         public void PlayCardDistributionAnimation(bool isNewGame)
         {
-            isCardDistributionCompleted = false;
+            
             generateCards(isNewGame);
             StartCoroutine(DistributeCardsToPlayer());
         }

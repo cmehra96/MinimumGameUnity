@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Player
 {
@@ -9,6 +10,7 @@ namespace Assets.Scripts.Player
         public List<GameObject> cardholder;        // Base of which cards are drawn for each Player
         public List<GameObject> turnIndicators;       //Holder for turn of each player
         public GameObject btn_min;                     // Minimum Button
+        public List<Text> message;
 
         public static PlayerUIMapping Instance
         {
@@ -41,7 +43,7 @@ namespace Assets.Scripts.Player
         // Update is called once per frame
         void Update()
         {
-
+          //  PlayerUIMapping.Instance.message[0].enabled = false;
         }
     }
 }
