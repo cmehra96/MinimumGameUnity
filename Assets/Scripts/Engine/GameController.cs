@@ -49,6 +49,7 @@ public class GameController : MonoBehaviour
 
     private void DistributeCards()
     {
+        
         CardDistributionAnimation.instance.PlayCardDistributionAnimation(true);
         DealtDeck.AllocateDeck();
         DealtDeck.Shuffle();
@@ -143,6 +144,10 @@ public class GameController : MonoBehaviour
         },0.5f);
         
         UnityMainThreadDispatcher.Schedule(() => StartNextRound(),0.5f);
+      //  UnityMainThreadDispatcher.Schedule(() => SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay), 0.5f);
+        UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(true, Constants.turnPlayerDelay));
+        Debug.Log("Call Minimum Completed");
+        
     }
 
     private void InitialisePlayers()
@@ -207,6 +212,7 @@ public class GameController : MonoBehaviour
     /// <param name="tempLongTouchedList">Deck of all Touched Cards</param>
     public void MultiCardDealtDeckSwap(Player player, Deck tempLongTouchedList)
     {
+        Debug.Log("Inside Multi Card Dealt Deck Swap Method");
         if (HandCombination.IsStraight(player, tempLongTouchedList) == true || HandCombination.isThreeOfKind(player, tempLongTouchedList) == true)
         {
             tempLongTouchedList.SortByRankAsc();
@@ -233,6 +239,7 @@ public class GameController : MonoBehaviour
             }
             GameView.Instance.isClearMethodCompleted = false;
             UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay));
+            Debug.Log("Multi Card Dealt Deck Swap Method Completed");
         }
     }
 
@@ -264,7 +271,8 @@ public class GameController : MonoBehaviour
         UnityMainThreadDispatcher.Schedule(() => GameView.Instance.LoadClearMethod(), Constants.clearMethodDelay);
 
         UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay));
-        
+        Debug.Log("Single Swap Dealt Deck Method Completed");
+
     }
 
     /// <summary>
@@ -303,6 +311,7 @@ public class GameController : MonoBehaviour
             yield return new WaitForSeconds(0.6f);
 
         }
+        Debug.Log("Single Swap Discarded Deck Animation Method Completed");
     }
 
     /// <summary>
@@ -374,8 +383,8 @@ public class GameController : MonoBehaviour
         this.touchedCard = null;    // Global variable
         UnityMainThreadDispatcher.Schedule(() => GameView.Instance.LoadClearMethod(), Constants.clearMethodDelay);
 
-        UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay)); 
-       
+        UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay));
+        Debug.Log("Single Swap Discarded Deck Method Completed");
     }
 
 
@@ -416,6 +425,7 @@ public class GameController : MonoBehaviour
             yield return new WaitForSeconds(0.6f);
 
         }
+        Debug.Log("Single Swap Discarded Deck Animation Method Completed");
     }
 
     public IEnumerator SwitchTurnToNextPlayer(bool isShowDownCalled, float delayTime)
@@ -492,6 +502,7 @@ public class GameController : MonoBehaviour
             players[i].AddToHand(DealtDeck.Deal());
             
         }
+        Debug.Log("Next Round Started");
     }
 
     public void ShowMessage(string message)

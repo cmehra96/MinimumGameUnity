@@ -12,6 +12,6 @@ namespace Assets.Scripts
         public const float clearMethodDelay = 1.5f;
         public const int totalrounds = 5;
         public const int totalmatch = 5;
-        
+        public const float startnextround = 0.5f;
     }
 }
