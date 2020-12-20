@@ -33,6 +33,7 @@ namespace Assets.Scripts
 
         public void ShowPopup(bool invokeOnComplete = true)
         {
+            Debug.Log("Inside Show Popup");
             if (DOTween.IsTweening(popupRect) || isOpen)
                 return;
 
@@ -44,6 +45,8 @@ namespace Assets.Scripts
                 onShow.Invoke();
 
             });
+
+            Debug.Log("Show Popup Completed");
         }
 
         public void HidePopup(bool invokeOnComplete = true)

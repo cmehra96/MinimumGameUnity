@@ -27,7 +27,7 @@ public class GameController : MonoBehaviour
     private Deck tempLongTouchedList = new Deck();
     private GameObject[] PlayerGameObject= new GameObject[6];
     public Popup exitPopup,scoreboardPopup;
-    private int roundCounter = 0;
+    private int roundCounter = 1;
 
     public static GameController Instance
     {
@@ -63,7 +63,7 @@ public class GameController : MonoBehaviour
 
     public void CallMinium(Player currentPlayer)
     {
-        
+        ShowMessage("Minimum!");
         Debug.Log("Minimum is called by " + currentPlayer.GetName());
         bool roundwon = true;
         Player winnerPlayer = currentPlayer;
@@ -114,11 +114,11 @@ public class GameController : MonoBehaviour
             }
             players[players.IndexOf(winnerPlayer)].SetRoundWon(true); // Index of player who won the round.
         }
-        UnityMainThreadDispatcher.Schedule(() =>
-        {
-            ShowMessage("Minimum!");
-        }
-        , 0.3f);
+        //UnityMainThreadDispatcher.Schedule(() =>
+        //{
+        //    ShowMessage("Minimum!");
+        //}
+        //, 0.3f);
         
         Debug.Log("Winner of this round is " + winnerPlayer.GetName());
         UnityMainThreadDispatcher.Schedule(() => 
@@ -137,15 +137,15 @@ public class GameController : MonoBehaviour
         //    StartNextRound();
         //}
         //, 5.0f);
-
-        UnityMainThreadDispatcher.Schedule(() =>
-       {
-           CardDistributionAnimation.instance.PlayCardDistributionAnimation(false);
-        },0.5f);
+        UnityMainThreadDispatcher.Schedule(
         
+            CardDistributionAnimation.instance.PlayCardDistributionAnimationRoutine(false)
+        , 0.5f);
+
         UnityMainThreadDispatcher.Schedule(() => StartNextRound(),0.5f);
-      //  UnityMainThreadDispatcher.Schedule(() => SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay), 0.5f);
-        UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(true, Constants.turnPlayerDelay));
+        UnityMainThreadDispatcher.Schedule(() => SwitchTurnToNextPlayer(true, Constants.turnPlayerDelay), 0.5f);
+        //UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(true, Constants.turnPlayerDelay));
+
         Debug.Log("Call Minimum Completed");
         
     }
@@ -238,7 +238,8 @@ public class GameController : MonoBehaviour
                 RefillDeck();
             }
             GameView.Instance.isClearMethodCompleted = false;
-            UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay));
+            UnityMainThreadDispatcher.Schedule(() => SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay), 0.5f);
+            //  UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay));
             Debug.Log("Multi Card Dealt Deck Swap Method Completed");
         }
     }
@@ -269,8 +270,8 @@ public class GameController : MonoBehaviour
             RefillDeck();
         }
         UnityMainThreadDispatcher.Schedule(() => GameView.Instance.LoadClearMethod(), Constants.clearMethodDelay);
-
-        UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay));
+        UnityMainThreadDispatcher.Schedule(() => SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay), 0.5f);
+        //  UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay));
         Debug.Log("Single Swap Dealt Deck Method Completed");
 
     }
@@ -359,7 +360,8 @@ public class GameController : MonoBehaviour
             player.AddToHand(temp);
             tempLongTouchedList.Clear();
             GameView.Instance.isClearMethodCompleted = false;
-            UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay));
+            //UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay));
+            UnityMainThreadDispatcher.Schedule(() => SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay), 0.5f);
         }
     }
 
@@ -382,8 +384,8 @@ public class GameController : MonoBehaviour
         player.AddToHand(temp);
         this.touchedCard = null;    // Global variable
         UnityMainThreadDispatcher.Schedule(() => GameView.Instance.LoadClearMethod(), Constants.clearMethodDelay);
-
-        UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay));
+        UnityMainThreadDispatcher.Schedule(() => SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay), 0.5f);
+        // UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay));
         Debug.Log("Single Swap Discarded Deck Method Completed");
     }
 
@@ -428,10 +430,10 @@ public class GameController : MonoBehaviour
         Debug.Log("Single Swap Discarded Deck Animation Method Completed");
     }
 
-    public IEnumerator SwitchTurnToNextPlayer(bool isShowDownCalled, float delayTime)
+    public void SwitchTurnToNextPlayer(bool isShowDownCalled, float delayTime)
     {
         Debug.Log("Inside Switch Turn To Next Player Method");
-        yield return new WaitForSeconds(delayTime);
+        
         int size = players.Count;
         if(isShowDownCalled)
         {
@@ -450,7 +452,7 @@ public class GameController : MonoBehaviour
        
         players[currentPlayerIndex].NotifyPlayerForTurn();
         Debug.Log("Switch Turn Method Executed Succussfully");
-        yield return new WaitForSeconds(delayTime);
+        
 
     }
 
@@ -498,7 +500,7 @@ public class GameController : MonoBehaviour
             players[i].SetShowCard(false);
             if (DealtDeck.CardsCount() == 0)
                 RefillDeck();
-            GameView.Instance.LoadClearMethod(i);
+            //GameView.Instance.LoadClearMethod(i);
             players[i].AddToHand(DealtDeck.Deal());
             
         }
@@ -507,6 +509,7 @@ public class GameController : MonoBehaviour
 
     public void ShowMessage(string message)
     {
+        Debug.Log("Minimum Message Displayed");
         PlayerUIMapping.Instance.message[0].text = message;
         PlayerUIMapping.Instance.message[0].enabled = true;
         PlayerUIMapping.Instance.message[0].GetComponent<Animator>().SetTrigger("display");
@@ -578,11 +581,11 @@ public class GameController : MonoBehaviour
         
     }
 
-    private void OnDisable()
-    {
-       Debug.Log("Inside Disable method");
-        StopAllCoroutines();
-    }
+    //private void OnDisable()
+    //{
+    //   Debug.Log("Inside Disable method");
+    //    StopAllCoroutines();
+    //}
 
     public PlayerList GetPlayers()
     {
@@ -607,5 +610,10 @@ public class GameController : MonoBehaviour
     public void SetIsLongPressed(bool isLongPressed)
     {
         this.isLongPressed = isLongPressed;
+    }
+
+    public int GetRoundCounter()
+    {
+        return roundCounter;
     }
 }

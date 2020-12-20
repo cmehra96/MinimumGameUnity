@@ -19,6 +19,7 @@ namespace Assets.Scripts.Player
         protected int currentRoundScore = 0;
         protected PlayerEventListener listener= new PlayerEventListener();
         protected bool showCardFace = false;
+        protected List<int> previousRoundScores = new List<int>();
 
         public Player(string name)
         {
@@ -79,6 +80,12 @@ namespace Assets.Scripts.Player
             return previousRoundScore;
         }
 
+        public int GetPreviousRoundScoreByIndex(int index)
+        {
+            if (index < 0 || previousRoundScores.Count == 0)
+                return 0;
+            return previousRoundScores[index];
+        }
         public string GetName()
         {
             return name;
@@ -87,6 +94,7 @@ namespace Assets.Scripts.Player
         public void AddScore(int roundscore)
         {
             currentRoundScore = roundscore;
+            previousRoundScores.Add(roundscore);
             this.score += roundscore;
         }
 

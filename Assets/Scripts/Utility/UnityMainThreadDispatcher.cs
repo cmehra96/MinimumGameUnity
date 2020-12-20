@@ -11,7 +11,7 @@ namespace Assets.Scripts.Utility
 
 		private static readonly Queue<Action> _executionQueue = new Queue<Action>();
 		private Queue<IEnumerator> coroutineQueue = new Queue<IEnumerator>();
-		public delegate void Task();
+		//public delegate void Task();
 		public List<System.Threading.Tasks.Task> TaskList = new List<System.Threading.Tasks.Task>();
 		public void Update()
 		{
@@ -42,34 +42,40 @@ namespace Assets.Scripts.Utility
 		/// Locks the queue and adds the IEnumerator to the queue
 		/// </summary>
 		/// <param name="action">IEnumerator function that will be executed from the main thread.</param>
-		public void Enqueue(Task task, float delay)
+		//public void Enqueue(Task task, float delay)
+		//{
+		//	lock (_executionQueue)
+		//	{
+		//		_executionQueue.Enqueue(() => {
+		//			StartCoroutine(DoTask(task, delay));
+		//		});
+		//	}
+		//}
+
+		public static void Schedule(IEnumerator routine, float delay)
 		{
-			lock (_executionQueue)
-			{
-				_executionQueue.Enqueue(() => {
-					StartCoroutine(DoTask(task, delay));
-				});
-			}
+			Instance().coroutineQueue.Enqueue(DoTask(routine, delay));
 		}
 
-		public static void Schedule(Task task, float delay)
+		public static void Schedule(Action task, float delay)
 		{
 			Debug.Log("Task Scheduled " + task.Method);
 			//Instance().Enqueue(task, delay);
 			Instance().coroutineQueue.Enqueue(DoTask(task, delay));
 
 		}
-		public static void ScheduleList(List<Task> tasks, float delay)
-        {
-			foreach (Task task in tasks)
-				Schedule(task, delay);
-        }
-
-		private static IEnumerator DoTask(Task task, float delay)
+		private static IEnumerator DoTask(Action task, float delay)
 		{
 			Debug.Log("Inside DoTask Coroutine");
 			yield return new WaitForSeconds(delay);
 			task();
+		}
+
+		private static IEnumerator DoTask(IEnumerator task, float delay)
+		{
+			Debug.Log("Inside DoTask Coroutine");
+			yield return new WaitForSeconds(delay);
+			yield return Instance().StartCoroutine(task);
 		}
 
 		IEnumerator CoroutineCoordinator()

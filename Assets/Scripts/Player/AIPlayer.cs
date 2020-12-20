@@ -17,13 +17,13 @@ namespace Assets.Scripts.Player
 
         public override void NotifyPlayerForTurn()
         {
-            Debug.Log("Inside Notify AIPlayer For Turn Method");
+            Debug.Log("Inside Notify AIPlayer For Turn Method for "+ name);
             
             UnityMainThreadDispatcher.Schedule(() =>
             {
                 ChoseActionToPlayAndInformListeners();
             },
-            0.5f);
+            2.0f);
         }
         /// <summary>
         /// Method to decide which action to be taken by Player based on call percent calculation

@@ -32,7 +32,7 @@ namespace Assets.Scripts.ScoreManager
             {
                 playerNameColoumn[i].text = GameController.Instance.players[i].GetName();
             }
-           for(int i=0;i< rows.Length;i++)
+           for(int i=0;i< GameController.Instance.GetRoundCounter();i++)
             {
                 PopulateData(i);
             }
@@ -47,12 +47,12 @@ namespace Assets.Scripts.ScoreManager
         private void PopulateData(int index)
         {
             rows[index].GetComponent<CanvasGroup>().alpha = 1.0f;
-            rows[index].UpdateText(index+1, GameController.Instance.players[0].GetCurrentRoundScore(),
-                 GameController.Instance.players[1].GetCurrentRoundScore(),
-                 GameController.Instance.players[2].GetCurrentRoundScore(),
-                 GameController.Instance.players[3].GetCurrentRoundScore(),
-                 GameController.Instance.players[4].GetCurrentRoundScore(),
-                 GameController.Instance.players[5].GetCurrentRoundScore());
+            rows[index].UpdateText(index+1, GameController.Instance.players[0].GetPreviousRoundScoreByIndex(index),
+                 GameController.Instance.players[1].GetPreviousRoundScoreByIndex(index),
+                 GameController.Instance.players[2].GetPreviousRoundScoreByIndex(index),
+                 GameController.Instance.players[3].GetPreviousRoundScoreByIndex(index),
+                 GameController.Instance.players[4].GetPreviousRoundScoreByIndex(index),
+                 GameController.Instance.players[5].GetPreviousRoundScoreByIndex(index));
         }
     }
 }

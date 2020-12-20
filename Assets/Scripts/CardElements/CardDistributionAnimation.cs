@@ -70,11 +70,22 @@ namespace Assets.Scripts.CardElements
             Debug.Log("Card Distribution method executed succussfully");
         }
 
+        //public void PlayCardDistributionAnimation(bool isNewGame)
+        //{
+            
+        //    generateCards(isNewGame);
+        //    StartCoroutine(DistributeCardsToPlayer());
+        //}
+
         public void PlayCardDistributionAnimation(bool isNewGame)
         {
-            
+            StartCoroutine(PlayCardDistributionAnimationRoutine(isNewGame));
+        }
+
+        public IEnumerator PlayCardDistributionAnimationRoutine(bool isNewGame)
+        {
             generateCards(isNewGame);
-            StartCoroutine(DistributeCardsToPlayer());
+            yield return DistributeCardsToPlayer();
         }
 
         public bool getIsCardDistributionCompleted()
