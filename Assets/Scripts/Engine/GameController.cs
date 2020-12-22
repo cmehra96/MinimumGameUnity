@@ -2,6 +2,7 @@
 using Assets.Scripts.CardElements;
 using Assets.Scripts.Listeners;
 using Assets.Scripts.Player;
+using Assets.Scripts.ScoreManager;
 using Assets.Scripts.Utility;
 using DG.Tweening;
 using System;
@@ -63,7 +64,7 @@ public class GameController : MonoBehaviour
 
     public void CallMinium(Player currentPlayer)
     {
-        ShowMessage("Minimum!");
+        ShowMessage("Minimum!", currentPlayerIndex);
         Debug.Log("Minimum is called by " + currentPlayer.GetName());
         bool roundwon = true;
         Player winnerPlayer = currentPlayer;
@@ -81,6 +82,7 @@ public class GameController : MonoBehaviour
                 roundwon = false;
                 winnerPlayer = player;
                 roundScore = playerRoundScore;
+
             }
         }
         if(roundwon)
@@ -121,6 +123,12 @@ public class GameController : MonoBehaviour
         //, 0.3f);
         
         Debug.Log("Winner of this round is " + winnerPlayer.GetName());
+        
+        UnityMainThreadDispatcher.Schedule(() =>
+        {
+            ShowMessage("Winner!", players.IndexOf(winnerPlayer));
+        }
+        , 1.0f);
         UnityMainThreadDispatcher.Schedule(() => 
         {
             scoreboardPopup.ShowPopup();
@@ -495,24 +503,56 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("Starting round " + (++roundCounter));
         
+        if(roundCounter>Constants.totalrounds)
+        {
+            StartNextSet();
+            return;
+        }
         for (int i=0;i<players.Count;i++)
         {
             players[i].SetShowCard(false);
             if (DealtDeck.CardsCount() == 0)
                 RefillDeck();
             //GameView.Instance.LoadClearMethod(i);
-            players[i].AddToHand(DealtDeck.Deal());
+            // UnityMainThreadDispatcher.Schedule(() => GameView.Instance.LoadClearMethod(i), 0.5f);
+             players[i].AddToHand(DealtDeck.Deal());
             
         }
-        Debug.Log("Next Round Started");
+        for (int i = 0; i < players.Count; i++)
+        {
+            GameView.Instance.LoadClearMethod(i);
+        }
+
+
+            Debug.Log("Next Round Started");
     }
 
-    public void ShowMessage(string message)
+    private void StartNextSet()
     {
-        Debug.Log("Minimum Message Displayed");
-        PlayerUIMapping.Instance.message[0].text = message;
-        PlayerUIMapping.Instance.message[0].enabled = true;
-        PlayerUIMapping.Instance.message[0].GetComponent<Animator>().SetTrigger("display");
+        Debug.Log("Starting Next Set");
+        for (int i = 0; i < players.Count; i++)
+        {
+            players[i].ClearDeck();
+            players[i].SetShowCard(false);
+        }
+        DealtDeck.Clear();
+        DiscardedDeck.Clear();
+        DistributeCards();
+        for (int i = 0; i < players.Count; i++)
+        {
+            GameView.Instance.LoadClearMethod(i);
+        }
+        roundCounter = 1;
+        ScoreBoard.Instance.ClearText();
+
+    }
+
+    public void ShowMessage(string message, int index)
+    {
+        Debug.Log(message+" Message Displayed");
+        PlayerUIMapping.Instance.message[index].text = message;
+        PlayerUIMapping.Instance.message[index].enabled = true;
+        PlayerUIMapping.Instance.message[index].GetComponent<Animator>().SetTrigger("display");
     }
     // Start is called before the first frame update
     void Start()

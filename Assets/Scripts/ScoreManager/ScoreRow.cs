@@ -34,5 +34,16 @@ namespace Assets.Scripts.ScoreManager
             Player5Score.text = e.ToString();
             Player6Score.text = f.ToString();
         }
+
+        public void ClearText()
+        {
+            Round.text = String.Empty;
+            Player1Score.text = String.Empty;
+            Player2Score.text = String.Empty;
+            Player3Score.text = String.Empty;
+            Player4Score.text = String.Empty;
+            Player5Score.text = String.Empty;
+            Player6Score.text = String.Empty;
+        }
     }
 }

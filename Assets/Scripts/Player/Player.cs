@@ -118,5 +118,9 @@ namespace Assets.Scripts.Player
             return showCardFace;
         }
 
+        public void ClearDeck()
+        {
+           myDeck.Clear();
+        }
     }
 }

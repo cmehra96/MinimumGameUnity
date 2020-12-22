@@ -21,7 +21,7 @@ namespace Assets.Scripts.ScoreManager
         }
         public void Start()
         {
-            InvokeRepeating("UpdateScoreCard", 0f, 1f);
+        //    InvokeRepeating("UpdateScoreCard", 0f, 1f);
         }
 
         public void UpdateScoreCard()
@@ -53,6 +53,13 @@ namespace Assets.Scripts.ScoreManager
                  GameController.Instance.players[3].GetPreviousRoundScoreByIndex(index),
                  GameController.Instance.players[4].GetPreviousRoundScoreByIndex(index),
                  GameController.Instance.players[5].GetPreviousRoundScoreByIndex(index));
+        }
+        public void ClearText()
+        {
+            for(int i=0;i<rows.Count();i++)
+            {
+                rows[i].ClearText();
+            }
         }
     }
 }
