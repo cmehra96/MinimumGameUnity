@@ -51,10 +51,10 @@ namespace Assets.Scripts
 
         public void HidePopup(bool invokeOnComplete = true)
         {
-            
+            Debug.Log("Inside Hide Popup");
             if (DOTween.IsTweening(popupRect) || !isOpen)
                 return;
-            Debug.Log("Inside Hide Popup");
+            
             isOpen = false;
             currentPopup = null;
             maskImage.gameObject.SetActive(isOpen);
