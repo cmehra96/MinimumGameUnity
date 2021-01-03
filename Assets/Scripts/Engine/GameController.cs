@@ -29,7 +29,8 @@ public class GameController : MonoBehaviour
     private GameObject[] PlayerGameObject= new GameObject[6];
     public Popup exitPopup,scoreboardPopup;
     private int roundCounter = 1;
-
+    GameObject playerparent = null;
+    
     public static GameController Instance
     {
         get;
@@ -39,27 +40,26 @@ public class GameController : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-
+        playerparent = GameObject.Find("PlayerCards");
     }
 
     private void InitialiseGame()
     {
         InitialisePlayers();
+        CardDistributionAnimation.instance.PlayCardDistributionAnimation(true);
         DistributeCards();
     }
 
     private void DistributeCards()
     {
-        
-        CardDistributionAnimation.instance.PlayCardDistributionAnimation(true);
-        DealtDeck.AllocateDeck();
-        DealtDeck.Shuffle();
-        DiscardedDeck.Add(DealtDeck.Deal());
-        for (int i = 0; i < players.Count; i++)
-        {
-            players[i].AddToHand(DealtDeck.Deal());
-            players[i].AddToHand(DealtDeck.Deal());
-        }
+           DealtDeck.AllocateDeck();
+            DealtDeck.Shuffle();
+            DiscardedDeck.Add(DealtDeck.Deal());
+            for (int i = 0; i < players.Count; i++)
+            {
+                players[i].AddToHand(DealtDeck.Deal());
+                players[i].AddToHand(DealtDeck.Deal());
+            }
     }
 
     public void CallMinium(Player currentPlayer)
@@ -145,11 +145,12 @@ public class GameController : MonoBehaviour
         //    StartNextRound();
         //}
         //, 5.0f);
+        if (roundCounter < Constants.totalrounds) { 
         UnityMainThreadDispatcher.Schedule(
         
             CardDistributionAnimation.instance.PlayCardDistributionAnimationRoutine(false)
         , 0.5f);
-
+            }
         UnityMainThreadDispatcher.Schedule(() => StartNextRound(),0.5f);
         UnityMainThreadDispatcher.Schedule(() => SwitchTurnToNextPlayer(true, Constants.turnPlayerDelay), 0.5f);
         //UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(true, Constants.turnPlayerDelay));
@@ -537,22 +538,28 @@ public class GameController : MonoBehaviour
         }
         DealtDeck.Clear();
         DiscardedDeck.Clear();
-        DistributeCards();
+        
         for (int i = 0; i < players.Count; i++)
         {
             GameView.Instance.LoadClearMethod(i);
         }
         roundCounter = 1;
         ScoreBoard.Instance.ClearText();
-
+        CardDistributionAnimation.instance.SetIsCardDistributionCompleted(false);
+        DistributeCards(); 
+        UnityMainThreadDispatcher.Schedule(
+          CardDistributionAnimation.instance.PlayCardDistributionAnimationRoutine(true)
+       , 0.5f);
+       
     }
 
     public void ShowMessage(string message, int index)
     {
         Debug.Log(message+" Message Displayed");
         PlayerUIMapping.Instance.message[index].text = message;
-        PlayerUIMapping.Instance.message[index].enabled = true;
+        
         PlayerUIMapping.Instance.message[index].GetComponent<Animator>().SetTrigger("display");
+        
     }
     // Start is called before the first frame update
     void Start()
@@ -568,9 +575,12 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
+       
         if (GameView.Instance != null && CardDistributionAnimation.instance.getIsCardDistributionCompleted())
 
         {
+            if (playerparent.activeSelf == false)
+                playerparent.SetActive(true);
             GameView.Instance.DrawMainPlayerDeck();
             GameView.Instance.DrawDealtDeck();
             GameView.Instance.DrawDiscardDeck();
@@ -581,6 +591,12 @@ public class GameController : MonoBehaviour
             GameView.Instance.DrawPlayerAtRight();
         }
 
+        else
+        {
+            //playerparent = GameObject.Find("PlayerCards");
+           if(playerparent.activeSelf==true)
+            playerparent.SetActive(false);
+        }
         if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 1f)
         {
             Debug.Log("Back Key Pressed");

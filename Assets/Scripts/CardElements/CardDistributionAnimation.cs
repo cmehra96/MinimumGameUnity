@@ -79,17 +79,24 @@ namespace Assets.Scripts.CardElements
 
         public void PlayCardDistributionAnimation(bool isNewGame)
         {
+            
             StartCoroutine(PlayCardDistributionAnimationRoutine(isNewGame));
         }
 
         public IEnumerator PlayCardDistributionAnimationRoutine(bool isNewGame)
         {
+           
             generateCards(isNewGame);
             yield return DistributeCardsToPlayer();
         }
 
         public bool getIsCardDistributionCompleted()
         { return isCardDistributionCompleted; }
+
+        public void SetIsCardDistributionCompleted(bool isCardDistributionCompleted)
+        {
+            this.isCardDistributionCompleted = isCardDistributionCompleted;
+        }
 
         void Awake()
         {
