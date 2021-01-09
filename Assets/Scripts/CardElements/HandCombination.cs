@@ -31,7 +31,7 @@ namespace Assets.Scripts.CardElements
 
         public static bool IsStraight(Deck tempLongTouchList)
         {
-            tempLongTouchList.SortByRankDesc();
+            tempLongTouchList.SortByRankAsc();
             if (tempLongTouchList.GetCardByIndex(0).GetRankValue() == 1)       // If first card is Ace
             {
                 Card tempCard = tempLongTouchList.GetCardByIndex(0);
@@ -84,7 +84,7 @@ namespace Assets.Scripts.CardElements
         {
             Debug.Log("Inside IsStraight Method");
             Deck temp = new Deck(player.GetDeck());
-            temp.SortByRankDesc();
+            temp.SortByRankAsc();
             if (temp.GetCardByIndex(0).GetRankValue() == 1)
             {
                 Card tempCard = temp.GetCardByIndex(0);
@@ -150,13 +150,13 @@ namespace Assets.Scripts.CardElements
         public static Deck GetStraight(Player.Player player)
         {
             Debug.Log("Inside Get Straight method");
-            Deck straightCards = new Deck(player.GetDeck());
+            Deck straightCards = new Deck();
             Deck temp = new Deck(player.GetDeck());
-            temp.SortByRankDesc();
+            temp.SortByRankAsc();
             if (temp.GetCardByIndex(0).GetRankValue() == 1)
                 temp.Add(temp.GetCardByIndex(0));
 
-            straightCards.Add(player.GetCardByIndex(0));
+            straightCards.Add(temp.GetCardByIndex(0));
             int size = temp.CardsCount() - 1;
             for (int i = 0; i < size; i++)
             {
@@ -186,7 +186,7 @@ namespace Assets.Scripts.CardElements
             Debug.Log("Inside Create Straight Method");
             Card removeCard = null;
             Deck tempDeck = new Deck(player.GetDeck());
-            tempDeck.SortByRankDesc();
+            tempDeck.SortByRankAsc();
             if (tempDeck.GetCardByIndex(0).GetRankValue() == 1)
                 tempDeck.Add(tempDeck.GetCardByIndex(0));
             int decksize = tempDeck.CardsCount();

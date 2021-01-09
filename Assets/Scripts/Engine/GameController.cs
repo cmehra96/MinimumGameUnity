@@ -53,31 +53,73 @@ public class GameController : MonoBehaviour
     private void DistributeCards()
     {
            DealtDeck.AllocateDeck();
-            DealtDeck.Shuffle();
+        //    DealtDeck.Shuffle();
             DiscardedDeck.Add(DealtDeck.Deal());
             for (int i = 0; i < players.Count; i++)
             {
                 players[i].AddToHand(DealtDeck.Deal());
                 players[i].AddToHand(DealtDeck.Deal());
-            }
+            players[i].AddToHand(DealtDeck.Deal());
+        }
     }
 
     public void CallMinium(Player currentPlayer)
     {
+        Player winnerPlayer = null;;
         ShowMessage("Minimum!", currentPlayerIndex);
+        UnityMainThreadDispatcher.Schedule(() =>
+        {
+            winnerPlayer = MinimumPlayer(currentPlayer);
+        }
+        , 1.0f);
+        
+        UnityMainThreadDispatcher.Schedule(() =>
+        {
+            ShowMessage("Winner!", players.IndexOf(winnerPlayer));
+        }
+        , 1.0f);
+        UnityMainThreadDispatcher.Schedule(() =>
+        {
+            scoreboardPopup.ShowPopup();
+        }
+        , 5.0f);
+        UnityMainThreadDispatcher.Schedule(() =>
+        {
+            scoreboardPopup.HidePopup();
+        }
+        , 5.0f);
+        
+        if (roundCounter < Constants.totalrounds)
+        {
+            UnityMainThreadDispatcher.Schedule(
+
+                CardDistributionAnimation.instance.PlayCardDistributionAnimationRoutine(false)
+            , 0.5f);
+        }
+        UnityMainThreadDispatcher.Schedule(() => StartNextRound(), 0.5f);
+        UnityMainThreadDispatcher.Schedule(() => SwitchTurnToNextPlayer(true, Constants.turnPlayerDelay), 0.5f);
+        //UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(true, Constants.turnPlayerDelay));
+
+        Debug.Log("Call Minimum Completed");
+
+    }
+
+    private Player MinimumPlayer(Player currentPlayer)
+    {
         Debug.Log("Minimum is called by " + currentPlayer.GetName());
         bool roundwon = true;
         Player winnerPlayer = currentPlayer;
         int roundScore = currentPlayer.EvaluateScore();
         Debug.Log(currentPlayer.GetName() + " round score is " + roundScore);
-        for(int i=0;i<players.Count;i++)
-        { Player player = players[i];
+        for (int i = 0; i < players.Count; i++)
+        {
+            Player player = players[i];
             player.SetShowCard(true);
             if (player == currentPlayer)
                 continue;
             int playerRoundScore = player.EvaluateScore();
             Debug.Log(player.GetName() + " round score is " + playerRoundScore);
-            if(roundScore>=playerRoundScore)
+            if (roundScore >= playerRoundScore)
             {
                 roundwon = false;
                 winnerPlayer = player;
@@ -85,12 +127,12 @@ public class GameController : MonoBehaviour
 
             }
         }
-        if(roundwon)
+        if (roundwon)
         {
-            for(int i=0;i<players.Count;i++)
+            for (int i = 0; i < players.Count; i++)
             {
                 Player player = players[i];
-                if (player==currentPlayer)
+                if (player == currentPlayer)
                 {
                     player.SetRoundWon(true);
                     player.AddScore(0);
@@ -102,17 +144,17 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            for(int i=0;i<players.Count;i++)
+            for (int i = 0; i < players.Count; i++)
             {
                 Player player = players[i];
                 if (player == currentPlayer)
                 {
                     player.SetRoundWon(false);
-                    player.AddScore(2* player.EvaluateScore());     // Double Points added if call player loose
+                    player.AddScore(2 * player.EvaluateScore());     // Double Points added if call player loose
                     continue;
                 }
                 player.AddScore(0);
-               
+
             }
             players[players.IndexOf(winnerPlayer)].SetRoundWon(true); // Index of player who won the round.
         }
@@ -121,42 +163,9 @@ public class GameController : MonoBehaviour
         //    ShowMessage("Minimum!");
         //}
         //, 0.3f);
-        
-        Debug.Log("Winner of this round is " + winnerPlayer.GetName());
-        
-        UnityMainThreadDispatcher.Schedule(() =>
-        {
-            ShowMessage("Winner!", players.IndexOf(winnerPlayer));
-        }
-        , 1.0f);
-        UnityMainThreadDispatcher.Schedule(() => 
-        {
-            scoreboardPopup.ShowPopup();
-        }
-        , 5.0f);
-        UnityMainThreadDispatcher.Schedule(() =>
-        {
-            scoreboardPopup.HidePopup();
-        }
-        , 5.0f);
-        //UnityMainThreadDispatcher.Schedule(() =>
-        //{
-        //    CardDistributionAnimation.instance.PlayCardDistributionAnimation(false);
-        //    StartNextRound();
-        //}
-        //, 5.0f);
-        if (roundCounter < Constants.totalrounds) { 
-        UnityMainThreadDispatcher.Schedule(
-        
-            CardDistributionAnimation.instance.PlayCardDistributionAnimationRoutine(false)
-        , 0.5f);
-            }
-        UnityMainThreadDispatcher.Schedule(() => StartNextRound(),0.5f);
-        UnityMainThreadDispatcher.Schedule(() => SwitchTurnToNextPlayer(true, Constants.turnPlayerDelay), 0.5f);
-        //UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(true, Constants.turnPlayerDelay));
 
-        Debug.Log("Call Minimum Completed");
-        
+        Debug.Log("Winner of this round is " + winnerPlayer.GetName());
+        return winnerPlayer;
     }
 
     private void InitialisePlayers()
@@ -233,12 +242,18 @@ public class GameController : MonoBehaviour
                 Card removeCard = player.RemoveCard(tempLongTouchedList.GetCardByIndex(i));
                 DiscardedDeck.Add(removeCard);
                 i++;
-                UnityMainThreadDispatcher.Instance().Enqueue(SingleSwapAnimationFromDealtDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], removeCard,
-           CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], false));
+                UnityMainThreadDispatcher.Schedule(
+
+               SingleSwapAnimationFromDealtDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], removeCard,
+           CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], false)
+            , 0.1f) ;       
 
             }
-            UnityMainThreadDispatcher.Instance().Enqueue(SingleSwapAnimationFromDealtDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], null,
-           CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], true));
+            UnityMainThreadDispatcher.Schedule(
+             SingleSwapAnimationFromDealtDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], null,
+           CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], true)
+            , 0.1f);
+            
             player.AddToHand(temp);
             tempLongTouchedList.Clear();
             if(DealtDeck.CardsCount()==0)
@@ -247,6 +262,7 @@ public class GameController : MonoBehaviour
                 RefillDeck();
             }
             GameView.Instance.isClearMethodCompleted = false;
+            UnityMainThreadDispatcher.Schedule(() => GameView.Instance.LoadClearMethod(), Constants.clearMethodDelay);
             UnityMainThreadDispatcher.Schedule(() => SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay), 0.5f);
             //  UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay));
             Debug.Log("Multi Card Dealt Deck Swap Method Completed");
@@ -266,8 +282,10 @@ public class GameController : MonoBehaviour
         Debug.Log("Inside Single Swap Dealt Deck Method");
         Card temp = DealtDeck.Deal();
         Debug.Log("Dealt Deck touched card" + temp.GetCardImageName());
-        UnityMainThreadDispatcher.Instance().Enqueue(SingleSwapAnimationFromDealtDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], touchedCard,
-            CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], true));
+        UnityMainThreadDispatcher.Schedule(SingleSwapAnimationFromDealtDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], touchedCard,
+            CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], true),0.1f);
+        //UnityMainThreadDispatcher.Instance().Enqueue(SingleSwapAnimationFromDealtDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], touchedCard,
+        //    CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], true));
         Debug.Log("Card to be swapped " + touchedCard.GetCardImageName());
         Card temp1 = player.RemoveCard(touchedCard);
         player.AddToHand(temp);
@@ -346,7 +364,7 @@ public class GameController : MonoBehaviour
     /// and add them to discarded deck
     /// and add top card of discarded deck to Player deck
     /// </summary>
-    /// <param name="player"></param>
+    /// <param name="player"></param> 
     /// <param name="tempLongTouchedList"></param>
     public void MultiCardDiscardedDeckSwap(Player player, Deck tempLongTouchedList)
     {
@@ -361,14 +379,15 @@ public class GameController : MonoBehaviour
                 Card removeCard = player.RemoveCard(tempLongTouchedList.GetCardByIndex(i));
                 DiscardedDeck.Add(removeCard);
                 i++;
-                UnityMainThreadDispatcher.Instance().Enqueue(SingleSwapAnimationFromDiscardedDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], removeCard,
-           CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], false));
+                UnityMainThreadDispatcher.Schedule(SingleSwapAnimationFromDiscardedDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], removeCard,
+           CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], false),0.1f);
             }
-            UnityMainThreadDispatcher.Instance().Enqueue(SingleSwapAnimationFromDiscardedDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], null,
-           CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], true));
+            UnityMainThreadDispatcher.Schedule(SingleSwapAnimationFromDiscardedDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], null,
+           CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], true),0.1f);
             player.AddToHand(temp);
             tempLongTouchedList.Clear();
             GameView.Instance.isClearMethodCompleted = false;
+            UnityMainThreadDispatcher.Schedule(() => GameView.Instance.LoadClearMethod(), Constants.clearMethodDelay);
             //UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay));
             UnityMainThreadDispatcher.Schedule(() => SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay), 0.5f);
         }
@@ -383,8 +402,8 @@ public class GameController : MonoBehaviour
     public void SingleSwapFromDiscardedDeck(Player player, Card touchedCard)
     {
         Debug.Log("Inside Single Swap Discarded Deck Method");
-        UnityMainThreadDispatcher.Instance().Enqueue(SingleSwapAnimationFromDiscardedDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], touchedCard,
-           CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], true));
+        UnityMainThreadDispatcher.Schedule(SingleSwapAnimationFromDiscardedDeck(PlayerUIMapping.Instance.cardholder[currentPlayerIndex], touchedCard,
+           CardDistributionAnimation.instance.playersPosition[currentPlayerIndex], true),0.1f);
         Card temp = DiscardedDeck.Deal();
         Card temp2 = player.RemoveCard(touchedCard);
         Debug.Log("Card to be swapped " + touchedCard.GetCardImageName());
@@ -535,6 +554,7 @@ public class GameController : MonoBehaviour
         {
             players[i].ClearDeck();
             players[i].SetShowCard(false);
+            players[i].ClearPreviousRoundScores();
         }
         DealtDeck.Clear();
         DiscardedDeck.Clear();
@@ -557,7 +577,6 @@ public class GameController : MonoBehaviour
     {
         Debug.Log(message+" Message Displayed");
         PlayerUIMapping.Instance.message[index].text = message;
-        
         PlayerUIMapping.Instance.message[index].GetComponent<Animator>().SetTrigger("display");
         
     }

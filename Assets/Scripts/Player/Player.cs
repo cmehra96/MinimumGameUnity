@@ -122,5 +122,10 @@ namespace Assets.Scripts.Player
         {
            myDeck.Clear();
         }
+
+        public void ClearPreviousRoundScores()
+        {
+            previousRoundScores.Clear();
+        }
     }
 }

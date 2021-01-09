@@ -23,7 +23,7 @@ namespace Assets.Scripts.CardElements
 
         public void Add(Card card)
         {
-            if (deck.Contains(card) == false)
+         //   if (deck.Contains(card) == false)
                 deck.Add(card);
 
         }
@@ -137,7 +137,7 @@ namespace Assets.Scripts.CardElements
             Card card1 = null; ;
             for (int i = 0; i < deck.Count; i++)
             {
-                if (deck[i] == card && deck[i].GetSuitValue() == card.GetSuitValue())
+                if (deck[i].GetRankValue() == card.GetRankValue() && deck[i].GetSuitValue() == card.GetSuitValue())
                 {
                   card1  = deck.ElementAt(i);
                     deck.RemoveAt(i);
