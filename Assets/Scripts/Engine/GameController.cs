@@ -52,14 +52,14 @@ public class GameController : MonoBehaviour
 
     private void DistributeCards()
     {
-           DealtDeck.AllocateDeck();
-        //    DealtDeck.Shuffle();
+            DealtDeck.AllocateDeck();
+            DealtDeck.Shuffle();
             DiscardedDeck.Add(DealtDeck.Deal());
             for (int i = 0; i < players.Count; i++)
             {
                 players[i].AddToHand(DealtDeck.Deal());
                 players[i].AddToHand(DealtDeck.Deal());
-            players[i].AddToHand(DealtDeck.Deal());
+           
         }
     }
 

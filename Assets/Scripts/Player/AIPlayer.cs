@@ -45,7 +45,7 @@ namespace Assets.Scripts.Player
                 int straightResult = HandCombination.IsStraight(this, GameController.Instance.DiscardedDeck.GetTopCard());
                 Debug.Log("Straight Method result" + straightResult);
                 // int threeOfKindResult = HandCombination.isThreeOfKind(this, GameController.Instance.DealtDeck.GetTopCard());
-                int threeOfKindResult = 0;
+                int threeOfKindResult = HandCombination.isThreeOfKind(this, GameController.Instance.DiscardedDeck.GetTopCard());
                 Debug.Log("Three of kinds method result" + threeOfKindResult);
                 if (straightResult == 1)       //Straight card exist in Player Deck
                 {
