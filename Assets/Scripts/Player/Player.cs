@@ -20,6 +20,7 @@ namespace Assets.Scripts.Player
         protected PlayerEventListener listener= new PlayerEventListener();
         protected bool showCardFace = false;
         protected List<int> previousRoundScores = new List<int>();
+        protected int rank;
 
         public Player(string name)
         {
@@ -126,6 +127,15 @@ namespace Assets.Scripts.Player
         public void ClearPreviousRoundScores()
         {
             previousRoundScores.Clear();
+        }
+
+        public void SetRank(int rank)
+        {
+            this.rank = rank;
+        }
+        
+        public int GetRank()
+        { return rank;
         }
     }
 }

@@ -30,6 +30,7 @@ public class GameController : MonoBehaviour
     public Popup exitPopup,scoreboardPopup;
     private int roundCounter = 1;
     GameObject playerparent = null;
+    private int setNumber = 1;
     
     public static GameController Instance
     {
@@ -525,6 +526,7 @@ public class GameController : MonoBehaviour
         
         if(roundCounter>Constants.totalrounds)
         {
+            setNumber++;
             StartNextSet();
             return;
         }
@@ -690,5 +692,13 @@ public class GameController : MonoBehaviour
     public int GetRoundCounter()
     {
         return roundCounter;
+    }
+    public int GetSetCounter()
+    {
+        return setNumber;
+    }
+    public void IncrementRoundCounter()
+    {
+        roundCounter++;
     }
 }
