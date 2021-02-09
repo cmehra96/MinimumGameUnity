@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Player;
+using Assets.Scripts.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,10 +40,11 @@ namespace Assets.Scripts.ScoreManager
                 PopulateData(i);
             }
             
-            if (GameController.Instance.GetSetCounter() > Constants.totalmatch)
+            if (GameController.Instance.GetSetCounter() == Constants.totalmatch && GameController.Instance.GetRoundCounter()==Constants.totalrounds)
             {
                 UpdateRank();
                 UpdateTotalText(true);
+                UnityMainThreadDispatcher.Instance().ClearQueue();
             }
             else
             {

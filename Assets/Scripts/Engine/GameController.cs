@@ -49,6 +49,14 @@ public class GameController : MonoBehaviour
         InitialisePlayers();
         CardDistributionAnimation.instance.PlayCardDistributionAnimation(true);
         DistributeCards();
+       // StartGame();
+    }
+
+    private void StartGame()
+    {
+        System.Random rnd = new System.Random();
+        currentPlayerIndex = rnd.Next(0, 6);
+        players[currentPlayerIndex].NotifyPlayerForTurn();
     }
 
     private void DistributeCards()
@@ -66,14 +74,15 @@ public class GameController : MonoBehaviour
 
     public void CallMinium(Player currentPlayer)
     {
-        Player winnerPlayer = null;;
+        Player winnerPlayer = null; ;
         ShowMessage("Minimum!", currentPlayerIndex);
+        
         UnityMainThreadDispatcher.Schedule(() =>
         {
             winnerPlayer = MinimumPlayer(currentPlayer);
         }
         , 1.0f);
-        
+
         UnityMainThreadDispatcher.Schedule(() =>
         {
             ShowMessage("Winner!", players.IndexOf(winnerPlayer));
@@ -89,20 +98,42 @@ public class GameController : MonoBehaviour
             scoreboardPopup.HidePopup();
         }
         , 5.0f);
-        
-        if (roundCounter < Constants.totalrounds)
+        UnityMainThreadDispatcher.Schedule(() =>
         {
-            UnityMainThreadDispatcher.Schedule(
-
-                CardDistributionAnimation.instance.PlayCardDistributionAnimationRoutine(false)
-            , 0.5f);
+            NextRound();
         }
-        UnityMainThreadDispatcher.Schedule(() => StartNextRound(), 0.5f);
-        UnityMainThreadDispatcher.Schedule(() => SwitchTurnToNextPlayer(true, Constants.turnPlayerDelay), 0.5f);
+        , 1.0f);
+        
+
+
         //UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(true, Constants.turnPlayerDelay));
 
         Debug.Log("Call Minimum Completed");
 
+    }
+
+    private void NextRound()
+    {
+        Debug.Log("Inside Next Round Logic Method, current round counter is " + roundCounter+ " and set counter is" +setNumber);
+        if (roundCounter <= Constants.totalrounds)
+        {
+            Debug.Log("Inside total round if case");
+            UnityMainThreadDispatcher.Schedule(
+                CardDistributionAnimation.instance.PlayCardDistributionAnimationRoutine(false)
+            , 0.5f);
+            UnityMainThreadDispatcher.Schedule(() => StartNextRound(), 0.5f);
+            UnityMainThreadDispatcher.Schedule(() => SwitchTurnToNextPlayer(true, Constants.turnPlayerDelay), 0.5f);
+        }
+        else if (setNumber <= Constants.totalmatch)
+        {
+            Debug.Log("Inside total sets if case");
+            UnityMainThreadDispatcher.Schedule(() => StartNextSet(), 0.5f);
+            UnityMainThreadDispatcher.Schedule(() => SwitchTurnToNextPlayer(true, Constants.turnPlayerDelay), 0.5f);
+        }
+        else
+        {
+            Debug.Log("Game Over");
+        }
     }
 
     private Player MinimumPlayer(Player currentPlayer)
@@ -522,14 +553,14 @@ public class GameController : MonoBehaviour
 
     private void StartNextRound()
     {
-        Debug.Log("Starting round " + (++roundCounter));
+        Debug.Log("Starting round " + (roundCounter));
         
-        if(roundCounter>Constants.totalrounds)
-        {
-            setNumber++;
-            StartNextSet();
-            return;
-        }
+        //if(roundCounter>Constants.totalrounds)
+        //{
+        //    setNumber++;
+        //    StartNextSet();
+        //    return;
+        //}
         for (int i=0;i<players.Count;i++)
         {
             players[i].SetShowCard(false);
@@ -551,7 +582,7 @@ public class GameController : MonoBehaviour
 
     private void StartNextSet()
     {
-        Debug.Log("Starting Next Set");
+        Debug.Log("Starting Set"+ setNumber);
         for (int i = 0; i < players.Count; i++)
         {
             players[i].ClearDeck();
@@ -699,6 +730,13 @@ public class GameController : MonoBehaviour
     }
     public void IncrementRoundCounter()
     {
+        Debug.Log("Inside Increment Round Counter");
         roundCounter++;
+        Debug.Log("Rounder Counter after increment" +roundCounter);
+        if (roundCounter > Constants.totalrounds)
+        {
+            setNumber++;
+            
+        }
     }
 }

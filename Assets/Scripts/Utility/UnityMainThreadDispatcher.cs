@@ -166,7 +166,13 @@ namespace Assets.Scripts.Utility
 		{
 			_instance = null;
 		}
+		public void ClearQueue()
+        {
+			Debug.Log("Clear Queue Method");
+			StopAllCoroutines();
+			coroutineQueue.Clear();
 
+		}
 
 	}
 
