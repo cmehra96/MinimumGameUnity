@@ -49,14 +49,19 @@ public class GameController : MonoBehaviour
         InitialisePlayers();
         CardDistributionAnimation.instance.PlayCardDistributionAnimation(true);
         DistributeCards();
-       // StartGame();
+      //  StartGame();
     }
 
-    private void StartGame()
+    public void StartGame()
     {
         System.Random rnd = new System.Random();
         currentPlayerIndex = rnd.Next(0, 6);
-        players[currentPlayerIndex].NotifyPlayerForTurn();
+        UnityMainThreadDispatcher.Schedule(() =>
+        {
+            players[currentPlayerIndex].NotifyPlayerForTurn();
+        }
+         , 1.0f);
+        
     }
 
     private void DistributeCards()
@@ -490,7 +495,6 @@ public class GameController : MonoBehaviour
     public void SwitchTurnToNextPlayer(bool isShowDownCalled, float delayTime)
     {
         Debug.Log("Inside Switch Turn To Next Player Method");
-        
         int size = players.Count;
         if(isShowDownCalled)
         {

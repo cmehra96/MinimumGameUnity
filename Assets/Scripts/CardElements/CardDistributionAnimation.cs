@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 using System.Linq;
+using Assets.Scripts.Utility;
 
 namespace Assets.Scripts.CardElements
 {
@@ -67,6 +68,8 @@ namespace Assets.Scripts.CardElements
             foreach (GameObject gameObject in generatedCards)
                 Destroy(gameObject);
             isCardDistributionCompleted = true;
+            GameController.Instance.StartGame();
+           
             Debug.Log("Card Distribution method executed succussfully");
         }
 
