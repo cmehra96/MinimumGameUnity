@@ -27,7 +27,7 @@ public class GameController : MonoBehaviour
     public int currentPlayerIndex = 0;
     private Deck tempLongTouchedList = new Deck();
     private GameObject[] PlayerGameObject= new GameObject[6];
-    public Popup exitPopup,scoreboardPopup;
+    public Popup exitPopup,scoreboardPopup,gameoverPopup;
     private int roundCounter = 1;
     GameObject playerparent = null;
     private int setNumber = 1;
@@ -103,9 +103,6 @@ public class GameController : MonoBehaviour
             NextRound();
         }
         , 1.0f);
-        
-
-
         //UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(true, Constants.turnPlayerDelay));
 
         Debug.Log("Call Minimum Completed");

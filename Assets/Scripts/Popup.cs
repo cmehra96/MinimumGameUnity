@@ -39,12 +39,9 @@ namespace Assets.Scripts
 
             isOpen = true;
             maskImage.gameObject.SetActive(isOpen);
-            popupRect.DOScale(Vector3.one, time).OnComplete(() =>
-            {
-                currentPopup = this;
-                onShow.Invoke();
-
-            });
+            popupRect.DOScale(Vector3.one, time);
+            currentPopup = this;
+            onShow.Invoke();
 
             Debug.Log("Show Popup Completed");
         }

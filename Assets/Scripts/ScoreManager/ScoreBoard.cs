@@ -45,6 +45,7 @@ namespace Assets.Scripts.ScoreManager
                 UpdateRank();
                 UpdateTotalText(true);
                 UnityMainThreadDispatcher.Instance().ClearQueue();
+                Invoke("ShowGameOver", 5.0f);
             }
             else
             {
@@ -107,6 +108,11 @@ namespace Assets.Scripts.ScoreManager
             {
                 rows[i].ClearText();
             }
+        }
+
+        private void ShowGameOver()
+        {
+            GameController.Instance.gameoverPopup.ShowPopup();
         }
     }
 }
