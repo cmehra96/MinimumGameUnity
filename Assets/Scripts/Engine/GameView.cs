@@ -323,8 +323,8 @@ public class GameView : MonoBehaviour
             RectTransform rt = vector2.GetComponent<RectTransform>();
             vector2.GetComponent<CardUI>().sprite = sprite;
             vector2.GetComponent<CardUI>().card = currentCard;
-            vector2.GetComponent<RectTransform>().sizeDelta = new Vector2(0.08f * Screen.width, 0.2f * Screen.height);
-            vector2.GetComponent<RectTransform>().localScale = Vector3.one;
+            //vector2.GetComponent<RectTransform>().sizeDelta = new Vector2(0.08f * Screen.width, 0.2f * Screen.height);
+            //vector2.GetComponent<RectTransform>().localScale = Vector3.one;
             //vector2.transform.position = Camera.main.ScreenToViewportPoint(new Vector3(Screen.width * 0.5f - rt.rect.width, Screen.height * 0.5f, 0));
             vector2.GetComponent<Image>().sprite = vector2.GetComponent<CardUI>().sprite;
             vector2.transform.SetParent(dealtDeckObject.transform);
@@ -346,8 +346,8 @@ public class GameView : MonoBehaviour
             Sprite sprite = Resources.Load<Sprite>(str);
             vector2.GetComponent<CardUI>().sprite = sprite;
             vector2.GetComponent<CardUI>().card = currentCard;
-            vector2.GetComponent<RectTransform>().sizeDelta = new Vector2(0.08f * Screen.width, 0.2f * Screen.height);
-            vector2.GetComponent<RectTransform>().localScale = Vector3.one;
+            //vector2.GetComponent<RectTransform>().sizeDelta = new Vector2(0.08f * Screen.width, 0.2f * Screen.height);
+            //vector2.GetComponent<RectTransform>().localScale = Vector3.one;
             //  vector2.transform.position = Camera.main.ScreenToViewportPoint(new Vector3(Screen.width * 0.5f + rt.rect.width, Screen.height * 0.5f, 0));
             CardUI cardUI = vector2.GetComponent<CardUI>();
             vector2.GetComponent<Image>().sprite = vector2.GetComponent<CardUI>().sprite;

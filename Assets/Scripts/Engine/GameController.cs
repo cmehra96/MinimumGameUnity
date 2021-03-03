@@ -47,7 +47,7 @@ public class GameController : MonoBehaviour
     private void InitialiseGame()
     {
         InitialisePlayers();
-        CardDistributionAnimation.instance.PlayCardDistributionAnimation(true);
+        CardDistributionAnimation.instance.PlayCardDistributionAnimation(true,true);
         DistributeCards();
       //  StartGame();
     }
@@ -74,7 +74,8 @@ public class GameController : MonoBehaviour
                 players[i].AddToHand(DealtDeck.Deal());
                 players[i].AddToHand(DealtDeck.Deal());
            
-        }
+            }
+        Debug.Log("Distribute Cards Completed");
     }
 
     public void CallMinium(Player currentPlayer)
