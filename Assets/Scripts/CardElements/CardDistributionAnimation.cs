@@ -50,7 +50,7 @@ namespace Assets.Scripts.CardElements
 
       
       
-        private IEnumerator DistributeCardsToPlayer()
+        private IEnumerator DistributeCardsToPlayer(Action task)
         {
             Debug.Log("Inside Distribute Cards To Player");
             for(int i=0;i< generatedCards.Count();i++)
@@ -68,8 +68,9 @@ namespace Assets.Scripts.CardElements
             foreach (GameObject gameObject in generatedCards)
                 Destroy(gameObject);
             isCardDistributionCompleted = true;
-            GameController.Instance.StartGame();
-           
+            //  GameController.Instance.StartGame();
+            if (task != null)
+                task();
             Debug.Log("Card Distribution method executed succussfully");
         }
 
@@ -80,17 +81,20 @@ namespace Assets.Scripts.CardElements
         //    StartCoroutine(DistributeCardsToPlayer());
         //}
 
-        public void PlayCardDistributionAnimation(bool isNewGame)
+        public void PlayCardDistributionAnimation(bool isNewGame,bool isFirstLaunch=false)
         {
             
-            StartCoroutine(PlayCardDistributionAnimationRoutine(isNewGame));
+            StartCoroutine(PlayCardDistributionAnimationRoutine(isNewGame,isFirstLaunch));
         }
 
-        public IEnumerator PlayCardDistributionAnimationRoutine(bool isNewGame)
+        public IEnumerator PlayCardDistributionAnimationRoutine(bool isNewGame, bool isFirstLaunch = false)
         {
            
             generateCards(isNewGame);
-            yield return DistributeCardsToPlayer();
+            if (isFirstLaunch)
+                yield return DistributeCardsToPlayer(() => { GameController.Instance.StartGame(); });
+            else
+                yield return DistributeCardsToPlayer(null);
         }
 
         public bool getIsCardDistributionCompleted()
