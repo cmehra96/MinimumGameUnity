@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class GameController : MonoBehaviour
 {
@@ -27,11 +28,13 @@ public class GameController : MonoBehaviour
     public int currentPlayerIndex = 0;
     private Deck tempLongTouchedList = new Deck();
     private GameObject[] PlayerGameObject= new GameObject[6];
-    public Popup exitPopup,scoreboardPopup,gameoverPopup;
+    public Popup exitPopup,scoreboardPopup,gameoverPopup,noNetworkPopup;
     private int roundCounter = 1;
     GameObject playerparent = null;
     private int setNumber = 1;
-    
+    public static GameMode currentGameMode = GameMode.Computer;
+    public TextAsset multiplayerList;
+
     public static GameController Instance
     {
         get;
@@ -46,6 +49,7 @@ public class GameController : MonoBehaviour
 
     private void InitialiseGame()
     {
+        
         InitialisePlayers();
         CardDistributionAnimation.instance.PlayCardDistributionAnimation(true,true);
         DistributeCards();
@@ -206,11 +210,29 @@ public class GameController : MonoBehaviour
     private void InitialisePlayers()
     {
         players.Add(new Player("You"));
-        for (int i = 1; i <= no_Of_CPU_Players; i++)
+        if (currentGameMode==GameMode.MultiPlayer)
         {
-            players.Add(new AIPlayer("Bot " + (i)));
-        }
+            string[] nameList = multiplayerList.text.Split('\n');
+            for (int i=1;i<=no_Of_CPU_Players;i++)
+            {
+                while(true)
+                {
+                    int index = UnityEngine.Random.Range(0, nameList.Length);
+                    string name = nameList[index].Trim();
+                    if (name.Length == 0) continue;
+                    players.Add(new AIPlayer(name));
+                    break;
+                }
 
+            }
+        }
+        else
+        {
+            for (int i = 1; i <= no_Of_CPU_Players; i++)
+            {
+                players.Add(new AIPlayer("Bot " + (i)));
+            }
+        }
         mainPlayer = players[0];
 
     }
@@ -622,6 +644,8 @@ public class GameController : MonoBehaviour
         {
             PlayerGameObject[i]= GameObject.Find(PlayerUIMapping.Instance.cardholder[currentPlayerIndex].name);
         }
+        if (currentGameMode == GameMode.MultiPlayer)
+            StartCoroutine(CheckNetwork());
         if (!initialise)
             InitialiseGame();
 
@@ -741,4 +765,38 @@ public class GameController : MonoBehaviour
             
         }
     }
+
+    private IEnumerator CheckNetwork()
+    {
+        while (true)
+        {
+            UnityWebRequest request = new UnityWebRequest("http://google.com");
+            yield return request.SendWebRequest();
+            
+            if (request.error != null)
+            {
+                Debug.Log("Inside show network popup");
+                noNetworkPopup.ShowPopup();
+                
+            }
+            else
+            {
+               
+                if (noNetworkPopup.isOpen)
+                {
+                    Debug.Log("Inside hide network popup");
+                    noNetworkPopup.HidePopup();
+
+                }
+            }
+            yield return new WaitForSecondsRealtime(1f);
+        }
+    }
+
+}
+
+public enum GameMode
+{
+    Computer,
+    MultiPlayer
 }

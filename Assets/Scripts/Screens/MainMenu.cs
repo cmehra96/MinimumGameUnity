@@ -17,9 +17,25 @@ namespace Assets.Scripts.Screens
             Instance = this;
             
         }
+        private void Start()
+        {
+            AdmobController.instance.ShowBanner();
+            AdmobController.instance.ShowInterstitial();
+        }
 
         public void StartComputerPlay()
         {
+            GameController.currentGameMode = GameMode.Computer;
+            SceneManager.LoadScene("Game");
+        }
+        public void StartMultiPlay()
+        {
+            EnterMultiplayer();
+        }
+
+        private void EnterMultiplayer()
+        {
+            GameController.currentGameMode = GameMode.MultiPlayer;
             SceneManager.LoadScene("Game");
         }
 
