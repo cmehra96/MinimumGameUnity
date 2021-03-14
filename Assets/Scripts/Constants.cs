@@ -13,6 +13,7 @@ namespace Assets.Scripts
         public const int totalrounds = 2;
         public const int totalmatch = 2;
         public const float startnextround = 0.5f;
+        public const float maxTimer = 10f;
 
         public static Dictionary<int, string> ranksToText = new Dictionary<int, string>
         {

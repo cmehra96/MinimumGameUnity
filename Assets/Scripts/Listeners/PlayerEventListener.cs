@@ -9,8 +9,6 @@ namespace Assets.Scripts.Listeners
 {
     public class PlayerEventListener : IPlayerEventListener
     {
-
-
         public void SingleSwapFromDealtDeck(Player.Player player, Card swapCard)
         {
             GameController.Instance.SingleSwapFromDealtDeck(player, swapCard);

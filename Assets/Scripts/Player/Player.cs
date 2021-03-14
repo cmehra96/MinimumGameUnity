@@ -21,8 +21,10 @@ namespace Assets.Scripts.Player
         protected bool showCardFace = false;
         protected List<int> previousRoundScores = new List<int>();
         protected int rank;
+        public float timeRemaining { get; set; } = Constants.maxTimer;
 
-        public Player(string name)
+
+       public Player(string name)
         {
             this.name = name;
             myDeck = new Deck();
@@ -137,5 +139,6 @@ namespace Assets.Scripts.Player
         public int GetRank()
         { return rank;
         }
+        
     }
 }

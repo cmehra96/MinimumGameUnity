@@ -11,6 +11,7 @@ namespace Assets.Scripts.Player
         public List<GameObject> turnIndicators;       //Holder for turn of each player
         public GameObject btn_min;                     // Minimum Button
         public List<Text> message;
+        public List<Text> timerDisplay;
 
         public static PlayerUIMapping Instance
         {

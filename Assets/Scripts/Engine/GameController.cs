@@ -34,6 +34,28 @@ public class GameController : MonoBehaviour
     private int setNumber = 1;
     public static GameMode currentGameMode = GameMode.Computer;
     public TextAsset multiplayerList;
+    private bool _timer;
+    System.Random rnd = new System.Random();
+    private float timeallocated = 0;
+
+    public bool Timer
+    {
+        get
+        {
+            return _timer;
+        }
+        set
+        {
+            CancelInvoke("ExecuteTimer");
+            _timer = value;
+            if(_timer)
+            {
+                timeallocated = rnd.Next(3, 12);
+                InvokeRepeating("ExecuteTimer", 0f, .1f);
+            }
+            
+        }
+    }
 
     public static GameController Instance
     {
@@ -58,13 +80,21 @@ public class GameController : MonoBehaviour
 
     public void StartGame()
     {
-        System.Random rnd = new System.Random();
+        
         currentPlayerIndex = rnd.Next(0, 6);
-        UnityMainThreadDispatcher.Schedule(() =>
+        if (currentGameMode == GameMode.Computer)
         {
-            players[currentPlayerIndex].NotifyPlayerForTurn();
+            UnityMainThreadDispatcher.Schedule(() =>
+            {
+                players[currentPlayerIndex].NotifyPlayerForTurn();
+            }
+             , 1.0f);
         }
-         , 1.0f);
+        else
+        {
+            players[currentPlayerIndex].timeRemaining = Constants.maxTimer;
+            Timer = true;
+        }
         
     }
 
@@ -86,7 +116,6 @@ public class GameController : MonoBehaviour
     {
         Player winnerPlayer = null; ;
         ShowMessage("Minimum!", currentPlayerIndex);
-        
         UnityMainThreadDispatcher.Schedule(() =>
         {
             winnerPlayer = MinimumPlayer(currentPlayer);
@@ -533,8 +562,15 @@ public class GameController : MonoBehaviour
         {
             currentPlayerIndex = (currentPlayerIndex + 1) % size;
         }
-       
-        players[currentPlayerIndex].NotifyPlayerForTurn();
+        if (currentGameMode == GameMode.Computer)
+        {
+         players[currentPlayerIndex].NotifyPlayerForTurn();
+        }
+        else
+        {
+            players[currentPlayerIndex].timeRemaining = Constants.maxTimer;
+            Timer = true;
+        }
         Debug.Log("Switch Turn Method Executed Succussfully");
         
 
@@ -775,9 +811,12 @@ public class GameController : MonoBehaviour
             
             if (request.error != null)
             {
-                Debug.Log("Inside show network popup");
-                noNetworkPopup.ShowPopup();
-                
+                if (Time.timeScale == 1f)
+                {
+                    Debug.Log("Inside show network popup");
+                    noNetworkPopup.ShowPopup();
+                    Time.timeScale = 0;
+                }
             }
             else
             {
@@ -786,10 +825,25 @@ public class GameController : MonoBehaviour
                 {
                     Debug.Log("Inside hide network popup");
                     noNetworkPopup.HidePopup();
-
+                    Time.timeScale = 1;
                 }
             }
             yield return new WaitForSecondsRealtime(1f);
+        }
+    }
+    private void ExecuteTimer()
+    {
+        Debug.Log("Execute Timer method");
+        timeallocated -= Time.deltaTime;
+        if (timeallocated <= 0)
+        {
+            players[currentPlayerIndex].NotifyPlayerForTurn();
+            Timer = false;
+        }
+        else if (players[currentPlayerIndex].timeRemaining <= 0)
+        {
+            CallMinium(players[currentPlayerIndex]);
+            Timer = false;
         }
     }
 

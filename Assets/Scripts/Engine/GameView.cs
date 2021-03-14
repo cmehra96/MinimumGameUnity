@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.CardElements;
+﻿using Assets.Scripts;
+using Assets.Scripts.CardElements;
 using Assets.Scripts.Player;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,6 +12,13 @@ public class GameView : MonoBehaviour
     public GameObject dealtDeckObject;
     public GameObject discardedDeckObject;
     public bool isClearMethodCompleted = true;
+    //public float timeRemainingP1 = Constants.maxTimer;
+    //public float timeRemainingP2 = Constants.maxTimer;
+    //public float timeRemainingP3 = Constants.maxTimer;
+    //public float timeRemainingP4 = Constants.maxTimer;
+    //public float timeRemainingP5 = Constants.maxTimer;
+    //public float timeRemainingP6 = Constants.maxTimer;
+
     public static GameView Instance
     {
         get;
@@ -24,14 +32,21 @@ public class GameView : MonoBehaviour
 
     public void DrawMainPlayerDeck()
     {
+        
         int cardcount = PlayerUIMapping.Instance.cardholder[0].transform.childCount;
         if (GameController.Instance.GetCurrentPlayer() == GameController.Instance.players[0])
         { PlayerUIMapping.Instance.turnIndicators[0].SetActive(true);
-          PlayerUIMapping.Instance.btn_min.SetActive(true);          
+          PlayerUIMapping.Instance.btn_min.SetActive(true);
+            if (GameController.Instance.players[0].timeRemaining > 0)
+            {
+                GameController.Instance.players[0].timeRemaining -= Time.deltaTime;
+                PlayerUIMapping.Instance.timerDisplay[0].text = GameController.Instance.players[0].timeRemaining.ToString("F0");
+            }
         }
         else
         { PlayerUIMapping.Instance.turnIndicators[0].SetActive(false);
           PlayerUIMapping.Instance.btn_min.SetActive(false);
+          GameController.Instance.players[0].timeRemaining = Constants.maxTimer;
         }
 
 
@@ -58,15 +73,6 @@ public class GameView : MonoBehaviour
                 vector2.transform.SetParent(PlayerUIMapping.Instance.cardholder[0].transform);
             }
         }
-
-        // If Required 
-        //else
-        //{
-        //    //foreach (Transform child in PlayerUIMapping.Instance.cardholder[0].transform)
-        //    {
-
-        //    }
-        //}
         PlayerUIMapping.Instance.cardholder[0].GetComponent<GridLayoutGroup>().enabled = true;
 
 
@@ -76,9 +82,19 @@ public class GameView : MonoBehaviour
     {
         int cardcount = PlayerUIMapping.Instance.cardholder[1].transform.childCount;
         if (GameController.Instance.GetCurrentPlayer() == GameController.Instance.players[1])
+        {
             PlayerUIMapping.Instance.turnIndicators[1].SetActive(true);
+            if (GameController.Instance.players[1].timeRemaining > 0)
+            {
+                GameController.Instance.players[1].timeRemaining -= Time.deltaTime;
+                PlayerUIMapping.Instance.timerDisplay[1].text = GameController.Instance.players[1].timeRemaining.ToString("F0");
+            }
+        }
         else
+        {
             PlayerUIMapping.Instance.turnIndicators[1].SetActive(false);
+            GameController.Instance.players[1].timeRemaining = Constants.maxTimer;
+        }
         bool showCardFace = GameController.Instance.players[1].GetShowCard(); ;
         int decksize = GameController.Instance.players[1].GetDeck().CardsCount();
         if (cardcount == 0)
@@ -125,9 +141,19 @@ public class GameView : MonoBehaviour
     {
         int cardcount = PlayerUIMapping.Instance.cardholder[2].transform.childCount;
         if (GameController.Instance.GetCurrentPlayer() == GameController.Instance.players[2])
+        {
             PlayerUIMapping.Instance.turnIndicators[2].SetActive(true);
+            if (GameController.Instance.players[2].timeRemaining > 0)
+            {
+                GameController.Instance.players[2].timeRemaining -= Time.deltaTime;
+                PlayerUIMapping.Instance.timerDisplay[2].text = GameController.Instance.players[2].timeRemaining.ToString("F0");
+            }
+        }
         else
+        {
             PlayerUIMapping.Instance.turnIndicators[2].SetActive(false);
+            GameController.Instance.players[2].timeRemaining = Constants.maxTimer;
+        }
         bool showCardFace = GameController.Instance.players[2].GetShowCard();
         if (cardcount == 0)
         {
@@ -171,9 +197,19 @@ public class GameView : MonoBehaviour
     {
         int cardcount = PlayerUIMapping.Instance.cardholder[3].transform.childCount;
         if (GameController.Instance.GetCurrentPlayer() == GameController.Instance.players[3])
+        {
             PlayerUIMapping.Instance.turnIndicators[3].SetActive(true);
+            if (GameController.Instance.players[3].timeRemaining > 0)
+            {
+                GameController.Instance.players[3].timeRemaining -= Time.deltaTime;
+                PlayerUIMapping.Instance.timerDisplay[3].text = GameController.Instance.players[3].timeRemaining.ToString("F0");
+            }
+        }
         else
+        {
             PlayerUIMapping.Instance.turnIndicators[3].SetActive(false);
+            GameController.Instance.players[3].timeRemaining = Constants.maxTimer;
+        }
         bool showCardFace = GameController.Instance.players[3].GetShowCard();
         if (cardcount == 0)
         {
@@ -218,9 +254,19 @@ public class GameView : MonoBehaviour
     {
         int cardcount = PlayerUIMapping.Instance.cardholder[4].transform.childCount;
         if (GameController.Instance.GetCurrentPlayer() == GameController.Instance.players[4])
+        {
             PlayerUIMapping.Instance.turnIndicators[4].SetActive(true);
+            if (GameController.Instance.players[4].timeRemaining > 0)
+            {
+                GameController.Instance.players[4].timeRemaining -= Time.deltaTime;
+                PlayerUIMapping.Instance.timerDisplay[4].text = GameController.Instance.players[4].timeRemaining.ToString("F0");
+            }
+        }
         else
+        {
             PlayerUIMapping.Instance.turnIndicators[4].SetActive(false);
+            GameController.Instance.players[4].timeRemaining = Constants.maxTimer;
+        }
         bool showCardFace = GameController.Instance.players[4].GetShowCard();
         if (cardcount == 0)
         {
@@ -265,9 +311,20 @@ public class GameView : MonoBehaviour
     {
         int cardcount = PlayerUIMapping.Instance.cardholder[5].transform.childCount;
         if (GameController.Instance.GetCurrentPlayer() == GameController.Instance.players[5])
+
+        {
             PlayerUIMapping.Instance.turnIndicators[5].SetActive(true);
+            if (GameController.Instance.players[5].timeRemaining > 0)
+            {
+                GameController.Instance.players[5].timeRemaining -= Time.deltaTime;
+                PlayerUIMapping.Instance.timerDisplay[5].text = GameController.Instance.players[5].timeRemaining.ToString("F0");
+            }
+        }
         else
+        {
             PlayerUIMapping.Instance.turnIndicators[5].SetActive(false);
+            GameController.Instance.players[5].timeRemaining = Constants.maxTimer;
+        }
         bool showCardFace = GameController.Instance.players[5].GetShowCard();
         if (cardcount == 0)
         {
