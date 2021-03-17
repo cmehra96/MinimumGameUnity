@@ -12006,12 +12006,6 @@ MonoBehaviour:
   dealtDeckObject: {fileID: 1164346593}
   discardedDeckObject: {fileID: 1605995516}
   isClearMethodCompleted: 1
-  timeRemainingP1: 10
-  timeRemainingP2: 10
-  timeRemainingP3: 10
-  timeRemainingP4: 10
-  timeRemainingP5: 10
-  timeRemainingP6: 10
 --- !u!114 &1785296097
 MonoBehaviour:
   m_ObjectHideFlags: 0

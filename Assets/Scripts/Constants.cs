@@ -10,8 +10,8 @@ namespace Assets.Scripts
     {
         public const float turnPlayerDelay = 2.0f;
         public const float clearMethodDelay = 1.5f;
-        public const int totalrounds = 2;
-        public const int totalmatch = 2;
+        public const int totalrounds = 4;
+        public const int totalmatch = 4;
         public const float startnextround = 0.5f;
         public const float maxTimer = 10f;
 
