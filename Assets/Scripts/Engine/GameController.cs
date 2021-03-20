@@ -36,7 +36,7 @@ public class GameController : MonoBehaviour
     public TextAsset multiplayerList;
     private bool _timer;
     System.Random rnd = new System.Random();
-    private float timeallocated = 0;
+    private int timeallocated = 0;
 
     public bool Timer
     {
@@ -51,7 +51,7 @@ public class GameController : MonoBehaviour
             if(_timer)
             {
                 timeallocated = rnd.Next(3, 12);
-                InvokeRepeating("ExecuteTimer", 0f, .1f);
+                InvokeRepeating("ExecuteTimer", 0f, 1f);
             }
             
         }
@@ -724,7 +724,7 @@ public class GameController : MonoBehaviour
                 ShowExit();
             }
         }
-
+       
 
     }
 
@@ -833,17 +833,21 @@ public class GameController : MonoBehaviour
     }
     private void ExecuteTimer()
     {
-        Debug.Log("Execute Timer method");
-        timeallocated -= Time.deltaTime;
-        if (timeallocated <= 0)
+        --timeallocated;
+        Debug.Log("Execute Timer method " +timeallocated);
+        if (players[currentPlayerIndex].timeRemaining <= 0)
         {
-            players[currentPlayerIndex].NotifyPlayerForTurn();
             Timer = false;
-        }
-        else if (players[currentPlayerIndex].timeRemaining <= 0)
-        {
             CallMinium(players[currentPlayerIndex]);
+            
+        }
+        else if (timeallocated <= 0)
+        {
+            if (currentPlayerIndex == 0)
+                return;
             Timer = false;
+            players[currentPlayerIndex].NotifyPlayerForTurn();
+
         }
     }
 
