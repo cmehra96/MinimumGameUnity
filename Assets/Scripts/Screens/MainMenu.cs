@@ -15,6 +15,7 @@ namespace Assets.Scripts.Screens
         private void Awake()
         {
             Instance = this;
+            DataManager.currentSceneName = SceneManager.GetActiveScene().name;
             
         }
         private void Start()
@@ -25,7 +26,7 @@ namespace Assets.Scripts.Screens
 
         public void StartComputerPlay()
         {
-            GameController.currentGameMode = GameMode.Computer;
+            DataManager.currentGameMode = GameMode.Computer;
             SceneManager.LoadScene("Game");
         }
         public void StartMultiPlay()
@@ -35,7 +36,7 @@ namespace Assets.Scripts.Screens
 
         private void EnterMultiplayer()
         {
-            GameController.currentGameMode = GameMode.MultiPlayer;
+            DataManager.currentGameMode = GameMode.MultiPlayer;
             SceneManager.LoadScene("Game");
         }
 

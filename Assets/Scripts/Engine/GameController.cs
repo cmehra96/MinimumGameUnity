@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -32,7 +33,7 @@ public class GameController : MonoBehaviour
     private int roundCounter = 1;
     GameObject playerparent = null;
     private int setNumber = 1;
-    public static GameMode currentGameMode = GameMode.Computer;
+   // public static GameMode currentGameMode = GameMode.Computer;
     public TextAsset multiplayerList;
     private bool _timer;
     System.Random rnd = new System.Random();
@@ -67,6 +68,8 @@ public class GameController : MonoBehaviour
     {
         Instance = this;
         playerparent = GameObject.Find("PlayerCards");
+        DataManager.currentSceneName = SceneManager.GetActiveScene().name;
+        AdmobController.instance.HideBanner();
     }
 
     private void InitialiseGame()
@@ -82,7 +85,7 @@ public class GameController : MonoBehaviour
     {
         
         currentPlayerIndex = rnd.Next(0, 6);
-        if (currentGameMode == GameMode.Computer)
+        if (DataManager.currentGameMode == GameMode.Computer)
         {
             UnityMainThreadDispatcher.Schedule(() =>
             {
@@ -239,7 +242,7 @@ public class GameController : MonoBehaviour
     private void InitialisePlayers()
     {
         players.Add(new Player("You"));
-        if (currentGameMode==GameMode.MultiPlayer)
+        if (DataManager.currentGameMode==GameMode.MultiPlayer)
         {
             string[] nameList = multiplayerList.text.Split('\n');
             for (int i=1;i<=no_Of_CPU_Players;i++)
@@ -562,7 +565,7 @@ public class GameController : MonoBehaviour
         {
             currentPlayerIndex = (currentPlayerIndex + 1) % size;
         }
-        if (currentGameMode == GameMode.Computer)
+        if (DataManager.currentGameMode == GameMode.Computer)
         {
          players[currentPlayerIndex].NotifyPlayerForTurn();
         }
@@ -680,7 +683,7 @@ public class GameController : MonoBehaviour
         {
             PlayerGameObject[i]= GameObject.Find(PlayerUIMapping.Instance.cardholder[currentPlayerIndex].name);
         }
-        if (currentGameMode == GameMode.MultiPlayer)
+        if (DataManager.currentGameMode == GameMode.MultiPlayer)
             StartCoroutine(CheckNetwork());
         if (!initialise)
             InitialiseGame();
