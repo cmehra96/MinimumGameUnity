@@ -12,7 +12,7 @@ namespace Assets.Scripts.Player
         public GameObject btn_min;                     // Minimum Button
         public List<Text> message;
         public List<Text> timerDisplay;
-
+        public List<GameObject> timerObjects;
         public static PlayerUIMapping Instance
         {
             get;

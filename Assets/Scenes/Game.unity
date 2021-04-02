@@ -995,6 +995,7 @@ GameObject:
   - component: {fileID: 130877338}
   - component: {fileID: 130877337}
   - component: {fileID: 130877336}
+  - component: {fileID: 130877339}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1067,6 +1068,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &130877339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130877335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4963fe8366a67f4497a4e58d7f881e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameMaster: {fileID: 8446490145243172844, guid: e05b73be41824a44d8fcc9898e1a0048,
+    type: 3}
 --- !u!1 &134763378
 GameObject:
   m_ObjectHideFlags: 0
@@ -11926,7 +11941,6 @@ GameObject:
   - component: {fileID: 1785296096}
   - component: {fileID: 1785296097}
   - component: {fileID: 1785296095}
-  - component: {fileID: 1785296098}
   m_Layer: 0
   m_Name: _GameControllerObject
   m_TagString: Untagged
@@ -11989,6 +12003,13 @@ MonoBehaviour:
   - {fileID: 537801556}
   - {fileID: 457966158}
   - {fileID: 842948552}
+  timerObjects:
+  - {fileID: 1632696831}
+  - {fileID: 34377768}
+  - {fileID: 49356884}
+  - {fileID: 537801554}
+  - {fileID: 457966156}
+  - {fileID: 842948550}
 --- !u!114 &1785296096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12025,20 +12046,6 @@ MonoBehaviour:
   gameoverPopup: {fileID: 108298117}
   noNetworkPopup: {fileID: 628919084}
   multiplayerList: {fileID: 4900000, guid: 1963306e074efe54d92ca147e6c1730f, type: 3}
---- !u!114 &1785296098
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1785296093}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4963fe8366a67f4497a4e58d7f881e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameMaster: {fileID: 8446490145243172844, guid: e05b73be41824a44d8fcc9898e1a0048,
-    type: 3}
 --- !u!1 &1861006780
 GameObject:
   m_ObjectHideFlags: 0

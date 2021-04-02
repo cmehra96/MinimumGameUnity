@@ -290,6 +290,7 @@ public class GameController : MonoBehaviour
     public void CallMinimumClicked()
     {
         Debug.Log("Minimum Button Clicked");
+        CancelInvoke("ExecuteTimer");
         CallMinium(mainPlayer);
     }
 
@@ -579,26 +580,6 @@ public class GameController : MonoBehaviour
 
     }
 
-    //private void LoadClearMethod()
-    //{
-    //    Debug.Log("Inside Load Clear Method");
-    //    IClearItems(PlayerGameObject[currentPlayerIndex]);
-    //    IClearItems(GameView.Instance.dealtDeckObject);
-    //    IClearItems(GameView.Instance.discardedDeckObject);
-    //}
-
-    //private void IClearItems(GameObject content)
-    //{
-    //    for (int i = 0; i < content.transform.childCount; i++)
-    //    {
-    //        Destroy(content.transform.GetChild(i).gameObject);
-    //    }
-    //    new WaitUntil(() => content.transform.childCount == 0);
-
-    //    Debug.Log("Clear Item Method Executed Completely");
-
-    //}
-
     private void RefillDeck()
     {
        if(DealtDeck.CardsCount()==0)
@@ -818,7 +799,15 @@ public class GameController : MonoBehaviour
                 {
                     Debug.Log("Inside show network popup");
                     noNetworkPopup.ShowPopup();
-                    Time.timeScale = 0;
+                    
+
+                    UnityMainThreadDispatcher.Schedule(() =>
+                    {
+                        Time.timeScale = 0;
+                    }
+                    , 0.2f);
+
+
                 }
             }
             else
@@ -844,10 +833,8 @@ public class GameController : MonoBehaviour
             CallMinium(players[currentPlayerIndex]);
             
         }
-        else if (timeallocated <= 0)
+        else if (timeallocated <= 0 && currentPlayerIndex != 0)
         {
-            if (currentPlayerIndex == 0)
-                return;
             Timer = false;
             players[currentPlayerIndex].NotifyPlayerForTurn();
 

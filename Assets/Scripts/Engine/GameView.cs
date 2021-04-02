@@ -12,12 +12,6 @@ public class GameView : MonoBehaviour
     public GameObject dealtDeckObject;
     public GameObject discardedDeckObject;
     public bool isClearMethodCompleted = true;
-    //public float timeRemainingP1 = Constants.maxTimer;
-    //public float timeRemainingP2 = Constants.maxTimer;
-    //public float timeRemainingP3 = Constants.maxTimer;
-    //public float timeRemainingP4 = Constants.maxTimer;
-    //public float timeRemainingP5 = Constants.maxTimer;
-    //public float timeRemainingP6 = Constants.maxTimer;
 
     public static GameView Instance
     {
@@ -37,6 +31,7 @@ public class GameView : MonoBehaviour
         if (GameController.Instance.GetCurrentPlayer() == GameController.Instance.players[0])
         { PlayerUIMapping.Instance.turnIndicators[0].SetActive(true);
           PlayerUIMapping.Instance.btn_min.SetActive(true);
+            PlayerUIMapping.Instance.timerObjects[0].SetActive(DataManager.currentGameMode == GameMode.MultiPlayer ? true : false);
             if (GameController.Instance.players[0].timeRemaining > 0)
             {
                 GameController.Instance.players[0].timeRemaining -= Time.deltaTime;
@@ -84,6 +79,7 @@ public class GameView : MonoBehaviour
         if (GameController.Instance.GetCurrentPlayer() == GameController.Instance.players[1])
         {
             PlayerUIMapping.Instance.turnIndicators[1].SetActive(true);
+            PlayerUIMapping.Instance.timerObjects[1].SetActive(DataManager.currentGameMode == GameMode.MultiPlayer ? true : false);
             if (GameController.Instance.players[1].timeRemaining > 0)
             {
                 GameController.Instance.players[1].timeRemaining -= Time.deltaTime;
@@ -143,6 +139,7 @@ public class GameView : MonoBehaviour
         if (GameController.Instance.GetCurrentPlayer() == GameController.Instance.players[2])
         {
             PlayerUIMapping.Instance.turnIndicators[2].SetActive(true);
+            PlayerUIMapping.Instance.timerObjects[2].SetActive(DataManager.currentGameMode == GameMode.MultiPlayer ? true : false);
             if (GameController.Instance.players[2].timeRemaining > 0)
             {
                 GameController.Instance.players[2].timeRemaining -= Time.deltaTime;
@@ -199,6 +196,7 @@ public class GameView : MonoBehaviour
         if (GameController.Instance.GetCurrentPlayer() == GameController.Instance.players[3])
         {
             PlayerUIMapping.Instance.turnIndicators[3].SetActive(true);
+            PlayerUIMapping.Instance.timerObjects[3].SetActive(DataManager.currentGameMode == GameMode.MultiPlayer ? true : false);
             if (GameController.Instance.players[3].timeRemaining > 0)
             {
                 GameController.Instance.players[3].timeRemaining -= Time.deltaTime;
@@ -256,6 +254,7 @@ public class GameView : MonoBehaviour
         if (GameController.Instance.GetCurrentPlayer() == GameController.Instance.players[4])
         {
             PlayerUIMapping.Instance.turnIndicators[4].SetActive(true);
+            PlayerUIMapping.Instance.timerObjects[4].SetActive(DataManager.currentGameMode == GameMode.MultiPlayer ? true : false);
             if (GameController.Instance.players[4].timeRemaining > 0)
             {
                 GameController.Instance.players[4].timeRemaining -= Time.deltaTime;
@@ -314,6 +313,7 @@ public class GameView : MonoBehaviour
 
         {
             PlayerUIMapping.Instance.turnIndicators[5].SetActive(true);
+            PlayerUIMapping.Instance.timerObjects[5].SetActive(DataManager.currentGameMode == GameMode.MultiPlayer ? true : false);
             if (GameController.Instance.players[5].timeRemaining > 0)
             {
                 GameController.Instance.players[5].timeRemaining -= Time.deltaTime;
