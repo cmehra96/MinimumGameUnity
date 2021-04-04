@@ -70,15 +70,15 @@ public class GameController : MonoBehaviour
         playerparent = GameObject.Find("PlayerCards");
         DataManager.currentSceneName = SceneManager.GetActiveScene().name;
         AdmobController.instance.HideBanner();
+       
     }
 
     private void InitialiseGame()
     {
-        
+      //  Debug.Log("Devi" + AdmobController.instance.deviceUniqueIdentifier);
         InitialisePlayers();
         CardDistributionAnimation.instance.PlayCardDistributionAnimation(true,true);
         DistributeCards();
-      //  StartGame();
     }
 
     public void StartGame()
@@ -723,7 +723,7 @@ public class GameController : MonoBehaviour
 
     public void CloseGame()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenuScreen");
+      SceneManager.LoadScene("MainMenuScreen");
     }
 
     public void RestartGame()
@@ -798,16 +798,8 @@ public class GameController : MonoBehaviour
                 if (Time.timeScale == 1f)
                 {
                     Debug.Log("Inside show network popup");
-                    noNetworkPopup.ShowPopup();
-                    
-
-                    UnityMainThreadDispatcher.Schedule(() =>
-                    {
-                        Time.timeScale = 0;
-                    }
-                    , 0.2f);
-
-
+                    noNetworkPopup.ShowPopup(0.0f);
+                    Time.timeScale = 0;
                 }
             }
             else

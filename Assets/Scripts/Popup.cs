@@ -15,7 +15,7 @@ namespace Assets.Scripts
         public bool closeOnEsc = true;
         [SerializeField] GameObject maskImage;
         [SerializeField] RectTransform popupRect;
-        [SerializeField] float time = .25f;
+       // [SerializeField] float time = .25f;
         public UnityEvent onShow;
         public UnityEvent onHide;
         public static Popup currentPopup;
@@ -31,7 +31,7 @@ namespace Assets.Scripts
             }
         }
 
-        public void ShowPopup(bool invokeOnComplete = true)
+        public void ShowPopup(float time=0.25f)
         {
             Debug.Log("Inside Show Popup");
             if (DOTween.IsTweening(popupRect) || isOpen)
@@ -41,12 +41,12 @@ namespace Assets.Scripts
             maskImage.gameObject.SetActive(isOpen);
             popupRect.DOScale(Vector3.one, time);
             currentPopup = this;
-            onShow.Invoke();
+            onShow.Invoke(); 
 
             Debug.Log("Show Popup Completed");
         }
 
-        public void HidePopup(bool invokeOnComplete = true)
+        public void HidePopup(float time = 0.25f)
         {
             Debug.Log("Inside Hide Popup");
             if (DOTween.IsTweening(popupRect) || !isOpen)

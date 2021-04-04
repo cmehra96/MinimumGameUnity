@@ -9,7 +9,7 @@ public class AdmobController : MonoBehaviour
     private BannerView bannerView;
     public InterstitialAd interstitial;
     public RewardBasedVideoAd rewardBasedVideo;
-
+    public  string deviceUniqueIdentifier;
     public static AdmobController instance;
 
     private void Awake()
@@ -19,6 +19,8 @@ public class AdmobController : MonoBehaviour
 
     private void Start()
     {
+        deviceUniqueIdentifier = SystemInfo.deviceUniqueIdentifier;
+        Debug.Log("Device id" + deviceUniqueIdentifier);
         RequestBanner();
         RequestInterstitial();
         InitRewardedVideo();
@@ -112,7 +114,7 @@ public class AdmobController : MonoBehaviour
     // Returns an ad request with custom ad targeting.
     private AdRequest CreateAdRequest()
     {
-        return new AdRequest.Builder().Build();
+        return new AdRequest.Builder().AddTestDevice("13aafe50dae72541bc949c8746323607").AddTestDevice("20a17cc3b61fd9e9b499373643efaefd").Build();
     }
 
     public void ShowInterstitial(InterstitialAd ad)

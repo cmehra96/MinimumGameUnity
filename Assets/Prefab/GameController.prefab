@@ -43,6 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afbaeb667ea0387438041b030c70e194, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deviceUniqueIdentifier: 
 --- !u!1 &8446490145243172844
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,11 +102,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   admob:
-    androidInterstitial: ca-app-pub-3940256099942544/1033173712
+    androidInterstitial: ca-app-pub-9121154268667556/8821229341
     iosInterstitial: ca-app-pub-3940256099942544/4411468910
-    androidBanner: ca-app-pub-3940256099942544/6300978111
+    androidBanner: ca-app-pub-9121154268667556/9012801032
     iosBanner: ca-app-pub-3940256099942544/2934735716
-    androidRewarded: ca-app-pub-3940256099942544/5224354917
+    androidRewarded: ca-app-pub-9121154268667556/4690412641
     iosRewarded: ca-app-pub-3940256099942544/1712485313
   adPeriod: 0
   rewardedVideoPeriod: 0
