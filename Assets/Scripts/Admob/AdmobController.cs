@@ -6,7 +6,7 @@ using Assets.Scripts.Admob;
 
 public class AdmobController : MonoBehaviour
 {
-    private BannerView bannerView;
+    private BannerView bannerView, custombannerview;
     public InterstitialAd interstitial;
     public RewardBasedVideoAd rewardBasedVideo;
     public  string deviceUniqueIdentifier;
@@ -61,13 +61,17 @@ public class AdmobController : MonoBehaviour
 
         // Register for ad events.
         this.bannerView.OnAdLoaded += this.HandleAdLoaded;
-        this.bannerView.OnAdFailedToLoad += this.HandleAdFailedToLoad;
-        this.bannerView.OnAdOpening += this.HandleAdOpened;
-        this.bannerView.OnAdClosed += this.HandleAdClosed;
-        this.bannerView.OnAdLeavingApplication += this.HandleAdLeftApplication;
+        //this.bannerView.OnAdFailedToLoad += this.HandleAdFailedToLoad;
+        //this.bannerView.OnAdOpening += this.HandleAdOpened;
+        //this.bannerView.OnAdClosed += this.HandleAdClosed;
+        //this.bannerView.OnAdLeavingApplication += this.HandleAdLeftApplication;
 
         // Load a banner ad.
         this.bannerView.LoadAd(this.CreateAdRequest());
+
+        AdSize adSize = new AdSize(320, 32);
+        custombannerview = new BannerView(adUnitId, adSize, AdPosition.Top);
+        custombannerview.LoadAd(CreateAdRequest());
     }
 
     public void RequestInterstitial()
@@ -134,11 +138,28 @@ public class AdmobController : MonoBehaviour
         }
     }
 
+    public void ShowCustomBanner()
+    {
+
+        if (custombannerview != null)
+        {
+            custombannerview.Show();
+        }
+    }
+
     public void HideBanner()
     {
         if (bannerView != null)
         {
             bannerView.Hide();
+        }
+    }
+
+    public void HideCustomBanner()
+    {
+        if (custombannerview != null)
+        {
+            custombannerview.Hide();
         }
     }
 

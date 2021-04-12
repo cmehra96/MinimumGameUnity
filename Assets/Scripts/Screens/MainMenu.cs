@@ -21,9 +21,16 @@ namespace Assets.Scripts.Screens
         private void Start()
         {
             AdmobController.instance.ShowBanner();
+            AdmobController.instance.HideCustomBanner();
             AdmobController.instance.ShowInterstitial();
         }
-
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
+        }
         public void StartComputerPlay()
         {
             DataManager.currentGameMode = GameMode.Computer;

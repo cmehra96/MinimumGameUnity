@@ -70,6 +70,7 @@ public class GameController : MonoBehaviour
         playerparent = GameObject.Find("PlayerCards");
         DataManager.currentSceneName = SceneManager.GetActiveScene().name;
         AdmobController.instance.HideBanner();
+        AdmobController.instance.ShowCustomBanner();
        
     }
 
@@ -110,8 +111,7 @@ public class GameController : MonoBehaviour
             {
                 players[i].AddToHand(DealtDeck.Deal());
                 players[i].AddToHand(DealtDeck.Deal());
-           
-            }
+        }
         Debug.Log("Distribute Cards Completed");
     }
 
