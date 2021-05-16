@@ -958,15 +958,16 @@ MonoBehaviour:
     are total 3 set, each of 4 round in the game.\n5.User can either swap cards from
     Discarded Deck or Dealt Deck.\n6. Player can either swap Single card or Multiple
     Cards if they belong to a specific category like \"Three of Kinds\" or \"Set
-    of 3 Straight Cards\".\n7. Player has to call \"Minimum\", to wins the round.\n8.
-    Once \"Minimum\" is called, cards of each player will be shown and hands will
-    be evaluate.\n9. If \"Called\", Player has score minimum points all player, he/she
-    wins the rounds else the player which have less or equal number of points.\n10.
-    Scores will be evaluated, in order of Ace lowest and King with highest points.\n11.
-    If \"Called\" Player wins the round, the score of zero will added to his score
-    and respective hand score of other player to their, else double of  evaluate
-    hand will be added to his score, and zero to all other players. \n12. At the
-    end of game, player with lowest wins the game."
+    of 3 Straight Cards\". To Select Multiple cards, player has long touch respective
+    card.\n7. Player has to call \"Minimum\", to wins the round.\n8. Once \"Minimum\"
+    is called, cards of each player will be shown and hands will be evaluate.\n9.
+    If \"Called\", Player has score minimum points all player, he/she wins the rounds
+    else the player which have less or equal number of points.\n10. Scores will be
+    evaluated, in order of Ace lowest and King with highest points.\n11. If \"Called\"
+    Player wins the round, the score of zero will added to his score and respective
+    hand score of other player to their, else double of  evaluate hand will be added
+    to his score, and zero to all other players. \n12. At the end of game, player
+    with lowest wins the game."
 --- !u!222 &852241566
 CanvasRenderer:
   m_ObjectHideFlags: 0

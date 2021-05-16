@@ -20,7 +20,7 @@ namespace Assets.Scripts.CardElements
 
         [SerializeField]
         [Tooltip("How long must pointer be down on this object to trigger a long press")]
-        private float holdTime = 1f;
+        private float holdTime = 0.5f;
         public UnityEvent onLongPress = new UnityEvent();
 
         // Start is called before the first frame update
@@ -67,6 +67,7 @@ namespace Assets.Scripts.CardElements
                 if(card==this.card)
                 {
                     Debug.Log("touched card" + card.GetCardImageName());
+                    GameController.Instance.SetIsLongPressed(false);
                     GameController.Instance.MainPlayerCardTapped(i);
                     return;
                 }

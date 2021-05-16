@@ -111,7 +111,7 @@ public class GameController : MonoBehaviour
             {
                 players[i].AddToHand(DealtDeck.Deal());
                 players[i].AddToHand(DealtDeck.Deal());
-        }
+            }
         Debug.Log("Distribute Cards Completed");
     }
 
@@ -290,6 +290,9 @@ public class GameController : MonoBehaviour
     public void CallMinimumClicked()
     {
         Debug.Log("Minimum Button Clicked");
+        isLongPressed = false;
+        if (tempLongTouchedList.CardsCount() > 0)
+            tempLongTouchedList.Clear();
         CancelInvoke("ExecuteTimer");
         CallMinium(mainPlayer);
     }
@@ -301,13 +304,16 @@ public class GameController : MonoBehaviour
     public void TopCardOfDealtDeckTapped()
     {
         Debug.Log("Dealt Deck Count " + DealtDeck.CardsCount());
+       
         if (!isLongPressed)
         {
+            CancelInvoke("ExecuteTimer");
             if (touchedCard != null)
                 SingleSwapFromDealtDeck(players[0], touchedCard);
         }
         else
         {
+            CancelInvoke("ExecuteTimer");
             MultiCardDealtDeckSwap(players[0], tempLongTouchedList);
         }
     }
@@ -437,13 +443,16 @@ public class GameController : MonoBehaviour
     /// </summary>
     public void TopCardOfDiscardedDeckTapped()
     {
+        
         if (!isLongPressed)
         {
+            CancelInvoke("ExecuteTimer");
             if (touchedCard != null)
                 SingleSwapFromDiscardedDeck(players[0], touchedCard);
         }
         else
         {
+            CancelInvoke("ExecuteTimer");
             MultiCardDiscardedDeckSwap(players[0], tempLongTouchedList);
         }
     }

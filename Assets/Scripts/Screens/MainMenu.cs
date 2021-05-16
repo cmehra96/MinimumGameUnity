@@ -22,7 +22,7 @@ namespace Assets.Scripts.Screens
         {
             AdmobController.instance.ShowBanner();
             AdmobController.instance.HideCustomBanner();
-            AdmobController.instance.ShowInterstitial();
+           // AdmobController.instance.ShowInterstitial();
         }
         private void Update()
         {

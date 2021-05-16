@@ -23,7 +23,7 @@ namespace Assets.Scripts.CardElements
 
         public void Add(Card card)
         {
-         //   if (deck.Contains(card) == false)
+            if (deck.Contains(card) == false)   //To stop same card adding twice while long touch event
                 deck.Add(card);
 
         }
