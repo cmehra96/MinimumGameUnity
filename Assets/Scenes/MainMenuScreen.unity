@@ -955,7 +955,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: "1. It is a 6 Player Game.\n2.In start of game each player has 2 cards
     in hand.\n3.There are 2 Decks on the table, Deal Deck and Discarded Deck.\n4.There
-    are total 3 set, each of 5 round in the game.\n5.User can either swap cards from
+    are total 3 set, each of 4 round in the game.\n5.User can either swap cards from
     Discarded Deck or Dealt Deck.\n6. Player can either swap Single card or Multiple
     Cards if they belong to a specific category like \"Three of Kinds\" or \"Set
     of 3 Straight Cards\".\n7. Player has to call \"Minimum\", to wins the round.\n8.

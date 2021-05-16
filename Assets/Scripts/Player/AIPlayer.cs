@@ -32,7 +32,7 @@ namespace Assets.Scripts.Player
         {
             int callPercent = GetCallPercent(GameController.Instance.GetPlayers(), this);
             Debug.Log("Call Percent" + callPercent);
-            if (callPercent >= 75)
+            if (callPercent >= 85)
             {
                 listener.SayMinimum(this);
             }
@@ -168,7 +168,7 @@ namespace Assets.Scripts.Player
                     }
                     else
                     {
-                        tempPercent += new Random().Next(101);
+                        tempPercent += new Random().Next(0,90);
                     }
                 }
             }

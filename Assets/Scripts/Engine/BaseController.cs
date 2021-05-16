@@ -18,14 +18,15 @@ namespace Assets.Scripts.Engine
         {
             if (pause == false)
             {
-                UnityMainThreadDispatcher.Schedule(() =>
-                {
-
-                    AdmobController.instance.ShowInterstitial();
-                }
-       , 1.0f);
+                Debug.Log("On Application Pause");
+                Invoke("ShowInterstitial", 1f);
             }
-            Debug.Log("On Application Pause");
+           
         }
+        private void ShowInterstitial()
+        {
+            AdmobController.instance.ShowInterstitial();
+        }
+
     }
 }

@@ -1,9 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Admob;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Assets.Scripts
 {
     public class Constants
@@ -11,10 +7,28 @@ namespace Assets.Scripts
         public const float turnPlayerDelay = 2.0f;
         public const float clearMethodDelay = 1.5f;
         public const int totalrounds = 4;
-        public const int totalmatch = 4;
+        public const int totalmatch = 3;
         public const float startnextround = 0.5f;
         public const float maxTimer = 10f;
+        /// <summary>
+        /// Production ads keys uncomment them before deploying to prod.
+        /// </summary>
+        //public const string androidInterstitial= "ca-app-pub-9121154268667556/8821229341";
+        //public const string iosInterstitial = "ca-app-pub-3940256099942544/4411468910";
+        //public const string androidBanner = "ca-app-pub-9121154268667556/9012801032";
+        //public const string iosBanner = "ca-app-pub-3940256099942544/2934735716";
+        //public const string androidRewarded = "ca-app-pub-9121154268667556/4690412641";
+        //public const string iosRewarded = "ca-app-pub-3940256099942544/1712485313";
 
+        /// <summary>
+        /// Test ads keys comment them before deploying to prod.
+        /// </summary>
+        //public const string androidInterstitial = "ca-app-pub-3940256099942544/1033173712";
+        //public const string iosInterstitial = "ca-app-pub-3940256099942544/4411468910";
+        //public const string androidBanner = "ca-app-pub-3940256099942544/6300978111";
+        //public const string iosBanner = "ca-app-pub-3940256099942544/2934735716";
+        //public const string androidRewarded = "ca-app-pub-3940256099942544/5224354917";
+        //public const string iosRewarded = "ca-app-pub-3940256099942544/1712485313";
         public static Dictionary<int, string> ranksToText = new Dictionary<int, string>
         {
             {1," (1st)" },
