@@ -58,13 +58,11 @@ public class GameView : MonoBehaviour
                 string str = "Cards/" + currentCard.GetCardImageName(true);
                 Sprite sprite = Resources.Load<Sprite>(str);
                 vector2.GetComponent<CardUI>().sprite = sprite;
-                // vector2.GetComponent<CardUI>().UpdateSpriteRender(sprite);
                 vector2.GetComponent<CardUI>().card = currentCard;
                 // vector2.GetComponent<RectTransform>().sizeDelta = new Vector2(0.08f * Screen.width, 0.2f * Screen.height);
                 // vector2.GetComponent<RectTransform>().localScale = Vector3.one;
                 CardUI cardUI = vector2.GetComponent<CardUI>();
                 vector2.GetComponent<Image>().sprite = vector2.GetComponent<CardUI>().sprite;
-
                 vector2.transform.SetParent(PlayerUIMapping.Instance.cardholder[0].transform);
             }
         }
@@ -403,10 +401,6 @@ public class GameView : MonoBehaviour
             Sprite sprite = Resources.Load<Sprite>(str);
             vector2.GetComponent<CardUI>().sprite = sprite;
             vector2.GetComponent<CardUI>().card = currentCard;
-            //vector2.GetComponent<RectTransform>().sizeDelta = new Vector2(0.08f * Screen.width, 0.2f * Screen.height);
-            //vector2.GetComponent<RectTransform>().localScale = Vector3.one;
-            //  vector2.transform.position = Camera.main.ScreenToViewportPoint(new Vector3(Screen.width * 0.5f + rt.rect.width, Screen.height * 0.5f, 0));
-            CardUI cardUI = vector2.GetComponent<CardUI>();
             vector2.GetComponent<Image>().sprite = vector2.GetComponent<CardUI>().sprite;
             vector2.transform.SetParent(discardedDeckObject.transform);
         }
