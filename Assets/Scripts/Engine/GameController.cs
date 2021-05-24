@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -109,8 +110,8 @@ public class GameController : MonoBehaviour
             DiscardedDeck.Add(DealtDeck.Deal());
             for (int i = 0; i < players.Count; i++)
             {
-                players[i].AddToHand(DealtDeck.Deal());
-                players[i].AddToHand(DealtDeck.Deal());
+            players[i].AddToHand(DealtDeck.Deal());
+            players[i].AddToHand(DealtDeck.Deal());
             }
         Debug.Log("Distribute Cards Completed");
     }
@@ -283,7 +284,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            tempLongTouchedList.Add(players[0].GetCardByIndex(cardindex));
+            tempLongTouchedList.Add(players[0].GetCardByIndex(cardindex),true);
         }
     }
 
@@ -413,10 +414,12 @@ public class GameController : MonoBehaviour
         foreach (Transform child in parent.transform)
         {
             CardUI cardUI = child.GetComponent<CardUI>();
-
             if (cardUI.card == touchedCard)
             {
+                string str = "Cards/" + cardUI.card.GetCardImageName(true);
+                Sprite sprite = Resources.Load<Sprite>(str);
                 var cover = Instantiate(cardUI, animationHolder.transform.position, Quaternion.identity, parent.transform);
+                cover.GetComponent<Image>().sprite = sprite;
                 cover.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 100);
                 var tween = cover.transform.DOMove(GameView.Instance.discardedDeckObject.transform.position, 0.5f);
                 //https://stackoverflow.com/questions/32413067/unity2d-destroy-method-not-working-when-i-try-to-destroy-a-game-object
@@ -532,11 +535,14 @@ public class GameController : MonoBehaviour
         foreach (Transform child in parent.transform)
         {
             CardUI cardUI = child.GetComponent<CardUI>();
-
+           
             if (cardUI.card == touchedCard)
             {
+                string str = "Cards/" + cardUI.card.GetCardImageName(true);
+                Sprite sprite = Resources.Load<Sprite>(str);
                 var cover = Instantiate(cardUI, animationHolder.transform.position, Quaternion.identity, parent.transform);
-                cover.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 100);
+                cover.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 135);                
+                cover.GetComponent<Image>().sprite = sprite;
                 var tween = cover.transform.DOMove(GameView.Instance.discardedDeckObject.transform.position, 0.5f);
                 //https://stackoverflow.com/questions/32413067/unity2d-destroy-method-not-working-when-i-try-to-destroy-a-game-object
                 tween.OnComplete(() => Destroy(cover.gameObject));
@@ -547,8 +553,9 @@ public class GameController : MonoBehaviour
         }
         if (isparentdistrubtioncompleted)
         {
-            var cardobject = GameView.Instance.dealtDeckObject.transform.GetChild(0);
+            var cardobject = GameView.Instance.discardedDeckObject.transform.GetChild(0);
             var animationobject = Instantiate(cardobject, GameView.Instance.discardedDeckObject.transform.position, Quaternion.identity, GameView.Instance.discardedDeckObject.transform);
+            animationobject.GetComponent<Image>().sprite= cardobject.GetComponent<CardUI>().sprite;
             var tween1 = animationobject.transform.DOMove(animationHolder.transform.position, 0.5f);
             tween1.OnComplete(() => Destroy(animationobject.gameObject));
             yield return new WaitForSeconds(0.6f);

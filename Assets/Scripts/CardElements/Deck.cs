@@ -21,11 +21,15 @@ namespace Assets.Scripts.CardElements
                 Add(new Card(card));
         }
 
-        public void Add(Card card)
-        {
-            if (deck.Contains(card) == false)   //To stop same card adding twice while long touch event
+        public void Add(Card card,bool isLongTouched=false)
+        {   
+            if(!isLongTouched)
                 deck.Add(card);
-
+            else
+            {
+                if (deck.Contains(card) == false)   //To stop same card adding twice while long touch event
+                    deck.Add(card);
+            }
         }
 
         public void AllocateDeck()
