@@ -86,9 +86,9 @@ namespace Assets.Scripts.Player
             Debug.Log("Inside Pick Best Card Method");
             Tuple<Card, bool> result = GetLargestCardByRank(deckTopCard);
             if (result.Item2 == true)
-                listener.SingleSwapFromDealtDeck(this, result.Item1);
-            else
                 listener.SingleSwapFromDiscardedDeck(this, result.Item1);
+            else
+                listener.SingleSwapFromDealtDeck(this, result.Item1);
         }
 
         /// <summary>
@@ -131,12 +131,14 @@ namespace Assets.Scripts.Player
             int score = EvaluateScore();
             if (cardCount <= 2)
             {
-                if (score <= 3)
+                if (score <= 4)
                 {
-                    callPercent = 100;
-                    return callPercent;
+                    return 100;         //Call percent =100
                 }
-
+                else if(score>=10)
+                {
+                    return 0;           //Call percent =0
+                }
             }
             foreach (Player player in playerLists)
             {
@@ -162,7 +164,7 @@ namespace Assets.Scripts.Player
                 }
                 else
                 {
-                    if ((float)(score / cardCount) <= 2.5)
+                    if ((float)(score / cardCount) <= 2.5f)
                     {
                         tempPercent += new Random().Next(50, 100);
                     }

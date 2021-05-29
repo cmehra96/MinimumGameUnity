@@ -102,22 +102,32 @@ public class GameController : MonoBehaviour
         }
         
     }
-
+    /// <summary>
+    /// Method to distribute cards to each player
+    /// </summary>
     private void DistributeCards()
     {
-            DealtDeck.AllocateDeck();
-            DealtDeck.Shuffle();
-            DiscardedDeck.Add(DealtDeck.Deal());
-            for (int i = 0; i < players.Count; i++)
-            {
-            players[i].AddToHand(DealtDeck.Deal());
-            players[i].AddToHand(DealtDeck.Deal());
-            }
+        Debug.Log("Distribute Cards Started");
+        DealtDeck.AllocateDeck();
+        DealtDeck.Shuffle();
+        DiscardedDeck.Add(DealtDeck.Deal());
+        for (int i = 0; i < players.Count; i++)
+        {
+        players[i].AddToHand(DealtDeck.Deal());
+        players[i].AddToHand(DealtDeck.Deal());
+        }
         Debug.Log("Distribute Cards Completed");
     }
 
+    /// <summary>
+    /// Method to determine winner player when minium is called
+    /// and execute next round start instructions
+    /// </summary>
+    /// <param name="currentPlayer">Current player</param>
+
     public void CallMinium(Player currentPlayer)
     {
+        Debug.Log("Inside Call Minium Method");
         Player winnerPlayer = null; ;
         ShowMessage("Minimum!", currentPlayerIndex);
         UnityMainThreadDispatcher.Schedule(() =>
@@ -152,6 +162,9 @@ public class GameController : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Method to start next round and switch turn to next player
+    /// </summary>
     private void NextRound()
     {
         Debug.Log("Inside Next Round Logic Method, current round counter is " + roundCounter+ " and set counter is" +setNumber);
@@ -175,13 +188,17 @@ public class GameController : MonoBehaviour
             Debug.Log("Game Over");
         }
     }
-
+    /// <summary>
+    /// Method to determine which player has scored minimum in this round
+    /// </summary>
+    /// <param name="currentPlayer"></param>
+    /// <returns>Player with minimum score</returns>
     private Player MinimumPlayer(Player currentPlayer)
     {
         Debug.Log("Minimum is called by " + currentPlayer.GetName());
         bool roundwon = true;
         Player winnerPlayer = currentPlayer;
-        int roundScore = currentPlayer.EvaluateScore();
+        int roundScore = currentPlayer.EvaluateScore(true);
         Debug.Log(currentPlayer.GetName() + " round score is " + roundScore);
         for (int i = 0; i < players.Count; i++)
         {
@@ -189,7 +206,7 @@ public class GameController : MonoBehaviour
             player.SetShowCard(true);
             if (player == currentPlayer)
                 continue;
-            int playerRoundScore = player.EvaluateScore();
+            int playerRoundScore = player.EvaluateScore(true);
             Debug.Log(player.GetName() + " round score is " + playerRoundScore);
             if (roundScore >= playerRoundScore)
             {
@@ -296,6 +313,7 @@ public class GameController : MonoBehaviour
             tempLongTouchedList.Clear();
         CancelInvoke("ExecuteTimer");
         CallMinium(mainPlayer);
+        Debug.Log("Minimum Button Clicked Completed");
     }
 
     /// <summary>
@@ -305,7 +323,7 @@ public class GameController : MonoBehaviour
     public void TopCardOfDealtDeckTapped()
     {
         Debug.Log("Dealt Deck Count " + DealtDeck.CardsCount());
-       
+        Debug.Log("Inside Top Card Dealt Deck Tapped Method");
         if (!isLongPressed)
         {
             CancelInvoke("ExecuteTimer");
@@ -317,6 +335,7 @@ public class GameController : MonoBehaviour
             CancelInvoke("ExecuteTimer");
             MultiCardDealtDeckSwap(players[0], tempLongTouchedList);
         }
+        Debug.Log("Top Card Dealt Deck Tapped Method Completed");
     }
 
     /// <summary>
@@ -470,6 +489,7 @@ public class GameController : MonoBehaviour
     /// <param name="tempLongTouchedList"></param>
     public void MultiCardDiscardedDeckSwap(Player player, Deck tempLongTouchedList)
     {
+        Debug.Log("Multi Card Discarded Deck Swap Started");
         if (HandCombination.IsStraight(player, tempLongTouchedList) == true || HandCombination.isThreeOfKind(player, tempLongTouchedList) == true)
         {
             tempLongTouchedList.SortByRankAsc();
@@ -493,6 +513,7 @@ public class GameController : MonoBehaviour
             //UnityMainThreadDispatcher.Instance().Enqueue(SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay));
             UnityMainThreadDispatcher.Schedule(() => SwitchTurnToNextPlayer(false, Constants.turnPlayerDelay), 0.5f);
         }
+        Debug.Log("Multi Card Discarded Deck Swap Completed");
     }
 
     /// <summary>
@@ -663,7 +684,7 @@ public class GameController : MonoBehaviour
         UnityMainThreadDispatcher.Schedule(
           CardDistributionAnimation.instance.PlayCardDistributionAnimationRoutine(true)
        , 0.5f);
-       
+        Debug.Log("Next Set Started");
     }
 
     public void ShowMessage(string message, int index)

@@ -66,20 +66,25 @@ namespace Assets.Scripts.Player
             Debug.Log("Inside Notify Player For Turn Method");
         }
 
-        public int EvaluateScore()
+         public int EvaluateScore(bool savescore=false)
         {
             int score = 0;
             foreach (Card card in myDeck.getDeck())
             {
                 score += card.GetRankValue();
             }
-            previousRoundScore = score;
+            if (savescore)
+            {
+                Debug.Log("Saving player score");
+                previousRoundScore = score;
+            }
             Debug.Log("Score of " + name + "this round is " + score);
             return score;
         }
 
         public int GetPreviousRoundScore()
         {
+            Debug.Log("Previous round score" + previousRoundScore);
             return previousRoundScore;
         }
 
@@ -119,6 +124,7 @@ namespace Assets.Scripts.Player
         public bool GetShowCard()
         {
             return showCardFace;
+            //return true;
         }
 
         public void ClearDeck()
