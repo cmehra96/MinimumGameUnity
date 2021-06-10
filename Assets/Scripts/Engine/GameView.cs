@@ -89,7 +89,7 @@ public class GameView : MonoBehaviour
             PlayerUIMapping.Instance.turnIndicators[1].SetActive(false);
             GameController.Instance.players[1].timeRemaining = Constants.maxTimer;
         }
-        bool showCardFace = GameController.Instance.players[1].GetShowCard(); ;
+        bool showCardFace = GameController.Instance.players[1].GetShowCard();
         int decksize = GameController.Instance.players[1].GetDeck().CardsCount();
         if (cardcount == 0)
         {
