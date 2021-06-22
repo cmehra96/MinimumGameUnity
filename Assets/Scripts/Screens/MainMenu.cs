@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using Assets.Scripts.RateGame;
 namespace Assets.Scripts.Screens
 {
     class MainMenu: MonoBehaviour
     {
         public GameObject Instructions;
+        public Popup ratePopup;
         public static MainMenu Instance
         {
             get;
@@ -28,7 +29,10 @@ namespace Assets.Scripts.Screens
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                Application.Quit();
+                if (RateGame.RateGame.instance.CanShowPopup() && Popup.currentPopup == null)
+                    ratePopup.ShowPopup();
+                else
+                    Quit();
             }
         }
         public void StartComputerPlay()
@@ -57,5 +61,21 @@ namespace Assets.Scripts.Screens
             Instructions.SetActive(false);
         }
 
+        public void Quit()
+        {
+            Application.Quit();
+        }
+
+        public void HideRatePopup()
+        {
+            RateGame.RateGame.instance.ResetSessionCount();
+            ratePopup.HidePopup();
+        }
+
+        public void DisableRatePopup()
+        {
+            HideRatePopup();
+            RateGame.RateGame.instance.SetDisablePopup();
+        }
     }
 }

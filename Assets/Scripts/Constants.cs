@@ -10,6 +10,10 @@ namespace Assets.Scripts
         public const int totalmatch = 3;
         public const float startnextround = 0.5f;
         public const float maxTimer = 10f;
+        public const string sessionCount = "SessionCount";
+        public const int sessionLimit = 5;
+        public const string AndroidURL = "https://play.google.com/store/apps/details?id=com.cmehra.minimum";
+        public const string hideRatePopupForever = "HideRatePopup";
         /// <summary>
         /// Production ads keys uncomment them before deploying to prod.
         /// </summary>

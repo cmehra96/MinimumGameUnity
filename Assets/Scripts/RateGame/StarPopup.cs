@@ -37,5 +37,18 @@ namespace Assets.Scripts.RateGame
             sendBtn.interactable = true;
         }
 
+        public void SendButtonClicked()
+        {
+#if UNITY_EDITOR
+            Application.OpenURL(Constants.AndroidURL);
+#elif UNITY_ANDROID
+       Application.OpenURL(Constants.AndroidURL);
+#elif UNITY_IPHONE
+        
+#else
+        
+#endif
+        }
+
     }
 }

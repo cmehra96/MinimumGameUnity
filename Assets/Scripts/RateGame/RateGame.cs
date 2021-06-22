@@ -7,49 +7,55 @@ using UnityEngine;
 
 namespace Assets.Scripts.RateGame
 {
-    class RateGame: MonoBehaviour
+  public class RateGame: MonoBehaviour
     {
-        private static RateGame instance;
+        public static RateGame instance { get; private set; }
        
         private void Start()
         {
             if(instance==null)
             {
                 instance = this;
-                SetStartTime();
+                if (IsPopupEnabled() == 0)
+                    IncreaseSessionCount();
             }
         }
 
-        private void SetStartTime()
+        private void IncreaseSessionCount()
         {
-            PlayerPrefs.SetString(Constants.openTime, System.DateTime.Now.ToBinary().ToString());
+            int nrOfSessions = GetNumberOfSessions();
+            nrOfSessions++;
+            Debug.Log("No of sessions " + nrOfSessions);
+            PlayerPrefs.SetInt(Constants.sessionCount, nrOfSessions);
         }
-        
-        /// <summary>
-        /// Method to determin no of hours played in this session
-        /// </summary>
-        /// <returns>Hours of played in session</returns>
-        public double GetTimeSinceOpen()
+
+        private int GetNumberOfSessions()
         {
-            long temp = System.Convert.ToInt64(PlayerPrefs.GetString(Constants.openTime)); 
-            System.DateTime oldDate = System.DateTime.FromBinary(temp);
-            System.DateTime currentDate = System.DateTime.Now;
-            System.TimeSpan difference = currentDate.Subtract(oldDate);
-            return difference.TotalHours;
+            return PlayerPrefs.GetInt(Constants.sessionCount);
         }
 
         public bool CanShowPopup()
         {
-            if (GetTimeSinceOpen() >= Constants.popupScheduleTime)
+            if (GetNumberOfSessions() >= Constants.sessionLimit)
                 return true;
             else
                 return false;
             
         }
-
-        private void OnApplicationQuit()
+        public void ResetSessionCount()
         {
-            
+            PlayerPrefs.SetInt(Constants.sessionCount, 0);
         }
+
+        public void SetDisablePopup()
+        {
+            PlayerPrefs.SetInt(Constants.hideRatePopupForever, 1);
+        }
+
+        public int IsPopupEnabled()
+        {
+           return PlayerPrefs.GetInt(Constants.hideRatePopupForever);
+        }
+
     }
 }
